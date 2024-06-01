@@ -10,7 +10,8 @@ import PrivateRoutes from "../PrivateRoutes/PrivateRoutes";
 import Profile from "../pages/User/Profile/Profile";
 import UpdateProfile from "../pages/User/Profile/UpdateProfile";
 import AllScholarship from "../pages/AllScholarship/AllScholarship";
-import UserDashboard from "../pages/UserDashboard/UserDashboard";
+import UserDashboard from "../pages/DashBoard/UserDashboard/UserDashboard";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 const router = createBrowserRouter([
   {
@@ -42,10 +43,16 @@ const router = createBrowserRouter([
         path: '/update-profile',
         element: <PrivateRoutes><UpdateProfile></UpdateProfile></PrivateRoutes>
       },
-      // --------- User Dashboard ------------
       {
         path: '/dashboard',
-        element: <PrivateRoutes><UserDashboard></UserDashboard></PrivateRoutes>
+        element: <PrivateRoutes><DashboardLayout></DashboardLayout></PrivateRoutes>,
+        children: [
+          // --------- User Dashboard ------------
+          {
+            path: '',
+            element: <PrivateRoutes><UserDashboard></UserDashboard></PrivateRoutes>
+          },
+        ]
       },
     ]
   }
