@@ -9,6 +9,8 @@ import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import PrivateRoutes from "../PrivateRoutes/PrivateRoutes";
 import Profile from "../pages/User/Profile/Profile";
 import UpdateProfile from "../pages/User/Profile/UpdateProfile";
+import AllScholarship from "../pages/AllScholarship/AllScholarship";
+import UserDashboard from "../pages/UserDashboard/UserDashboard";
 
 const router = createBrowserRouter([
   {
@@ -29,13 +31,22 @@ const router = createBrowserRouter([
         element: <Register></Register>
       },
       {
+        path: '/all-scholarship',
+        element: <AllScholarship></AllScholarship>
+      },
+      {
         path: '/profile',
         element: <PrivateRoutes><Profile></Profile></PrivateRoutes>
       },
       {
         path: '/update-profile',
         element: <PrivateRoutes><UpdateProfile></UpdateProfile></PrivateRoutes>
-      }
+      },
+      // --------- User Dashboard ------------
+      {
+        path: '/dashboard',
+        element: <PrivateRoutes><UserDashboard></UserDashboard></PrivateRoutes>
+      },
     ]
   }
 ]);

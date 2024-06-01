@@ -72,18 +72,19 @@ const AuthProvider = ({ children }) => {
       const loggedUser = { email: userEmail };
       setUser(currentUser);
       console.log('current user', currentUser);
-      setLoading(false);
       // if user exists then issue a token
       if (currentUser) {
         axios.post(`${import.meta.env.VITE_VERCEL_API}/jwt`, loggedUser, { withCredentials: true })
           .then(res => {
             console.log('token response', res.data);
+            setLoading(false);
           })
       }
       else {
         axios.post(`${import.meta.env.VITE_VERCEL_API}/logout`, loggedUser, { withCredentials: true })
           .then(res => {
             console.log(res.data);
+            setLoading(false);
           })
       }
     });

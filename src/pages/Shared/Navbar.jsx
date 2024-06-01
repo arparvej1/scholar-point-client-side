@@ -22,7 +22,7 @@ const Navbar = () => {
     } else {
       setTheme('light');
     }
-  }
+  };
 
   const handleLogOut = () => {
     logOut()
@@ -31,10 +31,10 @@ const Navbar = () => {
   }
   const navLinks = <>
     <li><NavLink to='/'>Home</NavLink></li>
+    <li><NavLink to='/all-scholarship'>All Scholarship</NavLink></li>
     {
-      !user && <>
-        <li><NavLink to='/login'>Login</NavLink></li>
-        <li><NavLink to='/register'>Register</NavLink></li>
+      user && <>
+        <li><NavLink to='/dashboard'>Dashboard</NavLink></li>
       </>
     }
   </>
@@ -42,7 +42,7 @@ const Navbar = () => {
     {
       user && <>
         <li><NavLink to='/profile'>Profile</NavLink></li>
-        
+
       </>
     }
   </>
