@@ -150,7 +150,7 @@ const AllScholarship = () => {
   return (
     <div>
       <Helmet>
-        <title> All scholarships | scholarshipSphere </title>
+        <title> All Scholarships | ScholarPoint </title>
       </Helmet>
       <h3 className="bg-base-300 w-full p-5 md:p-8 text-2xl md:text-5xl font-bold text-center rounded-3xl my-5">All scholarships </h3>
       <div className='my-6 text-center'>
@@ -185,17 +185,17 @@ const AllScholarship = () => {
                   <thead>
                     <tr>
                       <th></th>
-                      <td className="md:text-sm lg:text-lg">Image</td>
-                      <td className="md:text-sm lg:text-lg">Scholarship<br />Name</td>
-                      <td className="md:text-sm lg:text-lg">Subject<br />Category</td>
-                      <td className="md:text-sm lg:text-lg">Scholarship<br />Category</td>
-                      <td className="md:text-sm lg:text-lg">Application<br />Deadline</td>
-                      <td className="md:text-sm lg:text-lg">Details</td>
+                      <td className="md:text-sm lg:text-base">Image</td>
+                      <td className="md:text-sm lg:text-base">Scholarship<br />Name</td>
+                      <td className="md:text-sm lg:text-base">Subject<br />Category</td>
+                      <td className="md:text-sm lg:text-base">Scholarship<br />Category</td>
+                      <td className="md:text-sm lg:text-base">Application<br />Deadline</td>
+                      <td className="md:text-sm lg:text-base">Details</td>
                       {
                         activeAgent ?
                           <>
-                            <td className="md:text-sm lg:text-lg">Update</td>
-                            <td className="md:text-sm lg:text-lg">Delete</td>
+                            <td className="md:text-sm lg:text-base">Update</td>
+                            <td className="md:text-sm lg:text-base">Delete</td>
                           </>
                           : undefined
                       }
@@ -203,23 +203,23 @@ const AllScholarship = () => {
                   </thead>
                   <tbody>
                     {
-                      scholarships.map((scholarship, idx) => <tr key={scholarship._id} className="md:text-sm lg:text-lg">
-                        <th className="md:text-sm lg:text-lg">{(currentPage * itemsPerPage) + idx + 1}</th>
-                        <td className="md:text-sm lg:text-lg">
+                      scholarships.map((scholarship, idx) => <tr key={scholarship._id} className="md:text-sm lg:text-base">
+                        <th className="md:text-sm lg:text-base">{(currentPage * itemsPerPage) + idx + 1}</th>
+                        <td className="md:text-sm lg:text-base">
                           <img className="w-10" src={scholarship.universityLogo} alt="" />
                         </td>
-                        <td className="md:text-sm lg:text-lg">{scholarship.scholarshipName}</td>
-                        <td className="md:text-sm lg:text-lg">{scholarship.subjectCategory}</td>
-                        <td className="md:text-sm lg:text-lg text-center">{scholarship.scholarshipCategory}</td>
-                        <td className="md:text-sm lg:text-lg text-center">{scholarship.applicationDeadline}</td>
-                        <td className="md:text-sm lg:text-lg text-center"><Link to={`/scholarship/${scholarship._id}`} className="btn btn-link text-xl"><BiDetail title="View Details" /></Link></td>
+                        <td className="md:text-sm lg:text-base">{scholarship.scholarshipName}</td>
+                        <td className="md:text-sm lg:text-base">{scholarship.subjectCategory}</td>
+                        <td className="md:text-sm lg:text-base text-center">{scholarship.scholarshipCategory}</td>
+                        <td className="md:text-sm lg:text-base text-center">{scholarship.applicationDeadline}</td>
+                        <td className="md:text-sm lg:text-base text-center"><Link to={`/scholarship/${scholarship._id}`} className="btn btn-link text-xl"><BiDetail title="View Details" /></Link></td>
                         {
                           activeAgent ?
                             <>
-                              <td className="md:text-sm lg:text-lg">
+                              <td className="md:text-sm lg:text-base">
                                 <Link to={`/update-scholarship/${scholarship._id}`} className='btn btn-link text-xl text-center'><FiEdit title="Update scholarship" /></Link>
                               </td>
-                              <td className="md:text-sm lg:text-lg">
+                              <td className="md:text-sm lg:text-base">
                                 <button onClick={() => handleDelete(scholarship._id)} className='btn btn-link text-xl text-center'><RiDeleteBin2Fill title="Delete" />
                                 </button>
                               </td>

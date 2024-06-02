@@ -24,8 +24,8 @@ const AddScholarship = () => {
     const tuitionFees = form.tuitionFees.value;
     const applicationFees = form.applicationFees.value;
     const serviceCharge = form.serviceCharge.value;
-    const applicationDeadline = form.applicationDeadline.v
-    const scholarshipPostDate = form.scholarshipPostDate.v
+    const applicationDeadline = form.applicationDeadline.value;
+    const scholarshipPostDate = form.scholarshipPostDate.value;
     const postedUserEmail = user.email;
     const postedUserDisplayName = user.displayName;
 

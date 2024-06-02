@@ -44,7 +44,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/update-profile',
-        element: <PrivateRoutes><UpdateProfile></UpdateProfile></PrivateRoutes>
+        element: <PrivateRoutes><UpdateProfile></UpdateProfile></PrivateRoutes>,
       },
       // -------- Admin Routes Start ------------
       {
@@ -58,8 +58,9 @@ const router = createBrowserRouter([
         element: <PrivateRoutes><AddScholarship></AddScholarship></PrivateRoutes>
       },
       {
-        path: '/update-scholarship',
-        element: <PrivateRoutes><UpdateScholarship></UpdateScholarship></PrivateRoutes>
+        path: '/update-scholarship/:scholarshipId',
+        element: <PrivateRoutes><UpdateScholarship></UpdateScholarship></PrivateRoutes>,
+        loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/scholarship/${params.scholarshipId}`)
       },
       // -------- Agent Routes End ------------
       // --------- User Dashboard Start ------------
