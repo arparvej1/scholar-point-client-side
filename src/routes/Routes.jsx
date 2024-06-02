@@ -14,6 +14,7 @@ import UserDashboard from "../pages/DashBoard/UserDashboard/UserDashboard";
 import DashboardLayout from "../layouts/DashboardLayout";
 import AddScholarship from "../pages/AllScholarship/AddScholarship/AddScholarship";
 import UpdateScholarship from "../pages/AllScholarship/UpdateScholarship/UpdateScholarship";
+import DetailsScholarship from "../pages/AllScholarship/DetailsScholarship/DetailsScholarship";
 
 const router = createBrowserRouter([
   {
@@ -61,11 +62,18 @@ const router = createBrowserRouter([
         element: <PrivateRoutes><UpdateScholarship></UpdateScholarship></PrivateRoutes>
       },
       // -------- Agent Routes End ------------
+      // --------- User Dashboard Start ------------
       {
-        // --------- User Dashboard ------------
+        path: '/scholarship/:scholarshipId',
+        element: <PrivateRoutes><DetailsScholarship></DetailsScholarship></PrivateRoutes>,
+        loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/scholarship/${params.scholarshipId}`)
+      },
+      // --------- User Dashboard End ------------
+      {
         path: '/dashboard',
         element: <PrivateRoutes><DashboardLayout></DashboardLayout></PrivateRoutes>,
         children: [
+          // --------- User Dashboard Start in Dashboard ------------
           {
             path: '',
             element: <PrivateRoutes><UserDashboard></UserDashboard></PrivateRoutes>
