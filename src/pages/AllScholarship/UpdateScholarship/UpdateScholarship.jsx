@@ -4,11 +4,12 @@ import { Helmet } from "react-helmet-async";
 import { AuthContext } from "../../../provider/AuthProvider";
 import Swal from "sweetalert2";
 import { ToastContainer } from "react-toastify";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 
 const UpdateScholarship = () => {
   const { user, loginCheck } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const scholarship = useLoaderData();
   const {
@@ -83,6 +84,7 @@ const UpdateScholarship = () => {
             icon: 'success',
             confirmButtonText: 'Okay'
           })
+          navigate(`/scholarship/${_id}`);
         }
         // form.reset();
       })

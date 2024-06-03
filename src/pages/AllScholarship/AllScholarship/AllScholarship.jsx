@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useContext, useEffect, useState } from "react";
-// import scholarshipCard from "./scholarshipCard";
 import { FaList } from "react-icons/fa";
 import { IoGrid } from "react-icons/io5";
 import { AuthContext } from "../../../provider/AuthProvider";
@@ -13,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import { BiDetail } from "react-icons/bi";
+import ScholarshipCard from "../ScholarshipCard/ScholarshipCard";
 
 
 const AllScholarship = () => {
@@ -20,8 +20,8 @@ const AllScholarship = () => {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   // const activeAgent = CheckLibrarian(true);
-  const activeAgent = useState(true);
-  const [displayLayout, setDisplayLayout] = useState(localStorage.getItem('displayLayout') ? localStorage.getItem('displayLayout') : 'list');
+  const [activeAgent, setActiveAgent] = useState(true);
+  const [displayLayout, setDisplayLayout] = useState(localStorage.getItem('displayLayout') ? localStorage.getItem('displayLayout') : 'grid');
 
   // ----------------- pagination -----------------------
   const [filterQty, setFilterQty] = useState(1);
@@ -152,8 +152,9 @@ const AllScholarship = () => {
       <Helmet>
         <title> All Scholarships | ScholarPoint </title>
       </Helmet>
-      <h3 className="bg-base-300 w-full p-5 md:p-8 text-2xl md:text-5xl font-bold text-center rounded-3xl my-5">All scholarships </h3>
-      <div className='my-6 text-center'>
+      <h3 className="bg-base-300 w-full p-5 md:p-8 text-2xl md:text-5xl font-bold text-center rounded-3xl my-5">All Scholarships </h3>
+      {/* ----- filter start ----- */}
+      {/* <div className='my-6 text-center'>
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn m-1 bg-[#23BE0A] hover:bg-[#22be0ac5] text-white w-52">Filter By <IoIosArrowDown className='text-2xl' />
           </div>
@@ -163,7 +164,8 @@ const AllScholarship = () => {
             <li className={`${filterQty === 0 ? 'bg-accent text-accent-content rounded-xl' : undefined}`}><Link onClick={() => handleFilter('Not')}>Not Available</Link></li>
           </ul>
         </div>
-      </div>
+      </div> */}
+      {/* ----- filter end ----- */}
       {/* ------------------------- all scholarships display start ------------------ */}
       <div>
         <div className="flex justify-end items-center gap-2 my-5">
@@ -185,17 +187,18 @@ const AllScholarship = () => {
                   <thead>
                     <tr>
                       <th></th>
-                      <td className="md:text-sm lg:text-base">Image</td>
-                      <td className="md:text-sm lg:text-base">Scholarship<br />Name</td>
-                      <td className="md:text-sm lg:text-base">Subject<br />Category</td>
-                      <td className="md:text-sm lg:text-base">Scholarship<br />Category</td>
-                      <td className="md:text-sm lg:text-base">Application<br />Deadline</td>
-                      <td className="md:text-sm lg:text-base">Details</td>
+                      <td className="md:text-sm lg:text-base text-center">Image</td>
+                      <td className="md:text-sm lg:text-base text-center">University<br />Name</td>
+                      <td className="md:text-sm lg:text-base text-center">Scholarship<br />Category</td>
+                      <td className="md:text-sm lg:text-base text-center">Address</td>
+                      <td className="md:text-sm lg:text-base text-center">Application<br />Deadline</td>
+                      <td className="md:text-sm lg:text-base text-center">Application<br />Fees</td>
+                      <td className="md:text-sm lg:text-base text-center">Details</td>
                       {
                         activeAgent ?
                           <>
-                            <td className="md:text-sm lg:text-base">Update</td>
-                            <td className="md:text-sm lg:text-base">Delete</td>
+                            <td className="md:text-sm lg:text-base text-center">Update</td>
+                            <td className="md:text-sm lg:text-base text-center">Delete</td>
                           </>
                           : undefined
                       }
@@ -208,10 +211,11 @@ const AllScholarship = () => {
                         <td className="md:text-sm lg:text-base">
                           <img className="w-10" src={scholarship.universityLogo} alt="" />
                         </td>
-                        <td className="md:text-sm lg:text-base">{scholarship.scholarshipName}</td>
-                        <td className="md:text-sm lg:text-base">{scholarship.subjectCategory}</td>
-                        <td className="md:text-sm lg:text-base text-center">{scholarship.scholarshipCategory}</td>
+                        <td className="md:text-sm lg:text-base">{scholarship.universityName}</td>
+                        <td className="md:text-sm lg:text-base">{scholarship.scholarshipCategory}</td>
+                        <td className="md:text-sm lg:text-base text-center">{scholarship.universityCity}, {scholarship.universityCountry}</td>
                         <td className="md:text-sm lg:text-base text-center">{scholarship.applicationDeadline}</td>
+                        <td className="md:text-sm lg:text-base text-center">{scholarship.applicationFees}</td>
                         <td className="md:text-sm lg:text-base text-center"><Link to={`/scholarship/${scholarship._id}`} className="btn btn-link text-xl"><BiDetail title="View Details" /></Link></td>
                         {
                           activeAgent ?
@@ -235,15 +239,16 @@ const AllScholarship = () => {
             :
             <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {/* scholarships display card view */}
-              {/* {
-                scholarships.map(scholarship => <scholarshipCard
-                  key={scholarship._id} scholarship={scholarship}
+              {
+                scholarships.map(scholarship => <ScholarshipCard
+                  key={scholarship._id}
+                  scholarship={scholarship}
                   scholarships={scholarships}
                   setScholarships={setScholarships}
                   activeAgent={activeAgent}
                   handleDelete={handleDelete}
-                ></scholarshipCard>)
-              } */}
+                ></ScholarshipCard>)
+              }
             </div>
         }
         {
