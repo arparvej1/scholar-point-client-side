@@ -36,23 +36,26 @@ const DetailsScholarship = () => {
   };
 
   const [reviews, setReviews] = useState([]);
+  const loadReview = () => {
+    axios.get(`${import.meta.env.VITE_VERCEL_API}/reviewsFilter?scholarshipId=${_id}`)
+      .then(function (response) {
+        console.log(response.data);
+        setReviews(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
-    console.log(reviews);
+    loadReview();
   }, []);
 
   const handleAddReviewBtn = () => {
-    // if (currentStock <= 0) {
-    //   toast.warn('No stock available!')
-    //   return;
-    // }
-    // if (borrowList.find(borrow => borrow.borrowBookId.includes(_id) && borrow.borrowEmail.includes(user.email))) {
-    //   toast.warn('Already borrowed the book!');
-    //   return;
-    // } else if (borrowList.filter(borrow => borrow.borrowEmail.includes(user.email)).length >= 3) {
-    //   toast.warn('Maximum number of books borrowed!');
-    //   return;
-    // }
+    if (reviews.find(review => review.reviewerEmail.toLowerCase() === user.email.toLowerCase())) {
+      toast.warn('Already reviewed the scholarship!');
+      return;
+    }
     document.getElementById('addReviewModal').showModal();
   };
 
@@ -62,15 +65,13 @@ const DetailsScholarship = () => {
     setReviewRating(newRating);
     setRatingMsg('');
   };
+  const [reviewOneTime, setReviewOneTime] = useState(true);
 
   const handleAddReview = (e) => {
     e.preventDefault();
-    // if (borrowList.find(borrow => borrow.borrowBookId.includes(_id) && borrow.borrowEmail.includes(user.email))) {
-    //   toast.warn('Already borrowed the book!');
-    //   return;
-    // }
-    // if (!bookBorrowOneTime) return;
-    // setBookBorrowOneTime(false);
+
+    if (!reviewOneTime) return;
+    setReviewOneTime(false);
 
     if (reviewRating < 1) {
       return setRatingMsg('Please kindly provide a rating.');
@@ -98,12 +99,11 @@ const DetailsScholarship = () => {
       .then(function (response) {
         console.log(response.data);
         if (response.data.acknowledged) {
-          // updateStock();
           document.getElementById('addReviewModal').close();
           toast.success('Thanks for Review!');
+          loadReview();
+          form.reset();
         }
-        // form.reset();
-        // loadBorrow();
       })
       .catch(function (error) {
         console.log(error);
@@ -181,8 +181,8 @@ const DetailsScholarship = () => {
                     fullIcon={<i className="fa fa-star"></i>}
                     activeColor="#ffd700"
                   />
-                  {ratingMsg && <p className="text-red-500">{ratingMsg}</p>}
                 </label>
+                {ratingMsg && <p className="text-red-500">{ratingMsg}</p>}
                 <label className="flex flex-col gap-1 w-full">
                   <span>Review Date</span>
                   <input type="date" name="reviewDate" value={new Date().toISOString().substring(0, 10)} className="input input-bordered w-full" required />
@@ -199,9 +199,12 @@ const DetailsScholarship = () => {
         </dialog>
       </div>
       <div>
-        <ScholarshipReviewDisplay
-          currentScholarshipId={_id}
-        ></ScholarshipReviewDisplay>
+        {
+          reviews.length > 0 &&
+          <ScholarshipReviewDisplay
+            reviews={reviews}
+          ></ScholarshipReviewDisplay>
+        }
       </div>
       <ToastContainer />
     </>
