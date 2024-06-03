@@ -1,9 +1,11 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLoaderData } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { AuthContext } from "../../../provider/AuthProvider";
+import ReactStars from "react-rating-stars-component";
+import ScholarshipReviewDisplay from "../ScholarshipReview/ScholarshipReviewDisplay";
 
 const DetailsScholarship = () => {
   const { user } = useContext(AuthContext);
@@ -30,6 +32,16 @@ const DetailsScholarship = () => {
   } = scholarship;
 
   const handleApplyScholarship = () => {
+    console.log('handleApplyScholarship', scholarship);
+  };
+
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    console.log(reviews);
+  }, []);
+
+  const handleAddReviewBtn = () => {
     // if (currentStock <= 0) {
     //   toast.warn('No stock available!')
     //   return;
@@ -41,8 +53,15 @@ const DetailsScholarship = () => {
     //   toast.warn('Maximum number of books borrowed!');
     //   return;
     // }
-    // document.getElementById('addReviewModal').showModal();
-  }
+    document.getElementById('addReviewModal').showModal();
+  };
+
+  const [reviewRating, setReviewRating] = useState(0);
+  const [ratingMsg, setRatingMsg] = useState('');
+  const ratingChanged = (newRating) => {
+    setReviewRating(newRating);
+    setRatingMsg('');
+  };
 
   const handleAddReview = (e) => {
     e.preventDefault();
@@ -53,37 +72,42 @@ const DetailsScholarship = () => {
     // if (!bookBorrowOneTime) return;
     // setBookBorrowOneTime(false);
 
+    if (reviewRating < 1) {
+      return setRatingMsg('Please kindly provide a rating.');
+    } else {
+      setRatingMsg('');
+    }
+
     const form = e.target;
-    const reviewDate = form.reviewDate.value;
-    const rating = form.rating.value;
     const comment = form.comment.value;
+    const reviewDate = form.reviewDate.value;
 
     const completeReview = {
       reviewerImage: user.photoURL,
       reviewerName: user.displayName,
       reviewerEmail: user.email,
-      reviewerScholarshipId: _id,
+      scholarshipId: _id,
       reviewDate,
-      rating,
+      rating: parseInt(reviewRating),
       comment
     };
 
     console.log(completeReview);
     // --------- send server start ----- 
-    // axios.post(`${import.meta.env.VITE_VERCEL_API}/borrow`, borrowBook)
-    //   .then(function (response) {
-    //     console.log(response.data);
-    //     if (response.data.acknowledged) {
-    //       updateStock();
-    //       document.getElementById('addReviewModal').close();
-    //       toast.success('Borrow the book!');
-    //     }
-    //     form.reset();
-    //     loadBorrow();
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    axios.post(`${import.meta.env.VITE_VERCEL_API}/reviews`, completeReview)
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data.acknowledged) {
+          // updateStock();
+          document.getElementById('addReviewModal').close();
+          toast.success('Thanks for Review!');
+        }
+        // form.reset();
+        // loadBorrow();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     // --------- send server end -----
   }
 
@@ -108,7 +132,7 @@ const DetailsScholarship = () => {
             <hr />
             <div className="flex flex-wrap gap-3">
               <button onClick={handleApplyScholarship} className="btn bg-secondary text-secondary-content hover:bg-primary border-gray-500 px-6">Apply Scholarship</button>
-              <button className="btn bg-accent text-accent-content hover:bg-primary border-gray-500 px-6">Add Review</button>
+              <button onClick={handleAddReviewBtn} className="btn bg-accent text-accent-content hover:bg-primary border-gray-500 px-6">Add Review</button>
             </div>
           </div>
         </div>
@@ -137,18 +161,31 @@ const DetailsScholarship = () => {
               {/* if there is a button in form, it will close the modal */}
               <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
-            <h3 className="font-bold text-lg text-center">Review Form</h3>
+            <h3 className="font-bold text-lg text-center">Review</h3>
             <form
               onSubmit={handleAddReview}
               className="flex flex-col gap-5">
               <div className="grid grid-cols-1 gap-5">
                 <label className="flex flex-col gap-1 w-full">
-                  <span>Borrow Date</span>
-                  <input type="date" name="borrowDate" value={new Date().toISOString().substring(0, 10)} className="input input-bordered w-full" required />
+                  <span>Comment</span>
+                  <textarea name="comment" placeholder="Write your review here" className="textarea textarea-bordered h-24 w-full" required ></textarea>
+                </label>
+                <label className="flex gap-1 w-full items-center">
+                  <span>Rating: </span>
+                  <ReactStars
+                    count={5}
+                    onChange={ratingChanged}
+                    size={24}
+                    emptyIcon={<i className="far fa-star"></i>}
+                    halfIcon={<i className="fa fa-star-half-alt"></i>}
+                    fullIcon={<i className="fa fa-star"></i>}
+                    activeColor="#ffd700"
+                  />
+                  {ratingMsg && <p className="text-red-500">{ratingMsg}</p>}
                 </label>
                 <label className="flex flex-col gap-1 w-full">
-                  <span>Book Return Date</span>
-                  <input type="date" name="bookReturnDate" min={new Date().toISOString().substring(0, 10)} className="input input-bordered w-full" required />
+                  <span>Review Date</span>
+                  <input type="date" name="reviewDate" value={new Date().toISOString().substring(0, 10)} className="input input-bordered w-full" required />
                 </label>
               </div>
               <div className="gap-5">
@@ -158,7 +195,13 @@ const DetailsScholarship = () => {
               </div>
             </form>
           </div>
+          <ToastContainer />
         </dialog>
+      </div>
+      <div>
+        <ScholarshipReviewDisplay
+          currentScholarshipId={_id}
+        ></ScholarshipReviewDisplay>
       </div>
       <ToastContainer />
     </>
