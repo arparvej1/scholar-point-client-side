@@ -26,6 +26,7 @@ const AddScholarship = () => {
     const serviceCharge = form.serviceCharge.value;
     const applicationDeadline = form.applicationDeadline.value;
     const scholarshipPostDate = form.scholarshipPostDate.value;
+    const scholarshipDescription = form.scholarshipDescription.value;
     const postedUserEmail = user.email;
     const postedUserDisplayName = user.displayName;
 
@@ -44,6 +45,7 @@ const AddScholarship = () => {
       serviceCharge: parseInt(serviceCharge),
       applicationDeadline,
       scholarshipPostDate,
+      scholarshipDescription,
       postedUserEmail,
       postedUserDisplayName
     }
@@ -174,6 +176,12 @@ const AddScholarship = () => {
             <label className="flex flex-col gap-1 w-full">
               <span>Application Deadline</span>
               <input type="date" name="applicationDeadline" min={new Date().toISOString().substring(0, 10)} className="input input-bordered w-full" required />
+            </label>
+          </div>
+          <div className="gap-5">
+            <label className="flex flex-col gap-1 w-full">
+              <span>Scholarship Description</span>
+              <textarea name="scholarshipDescription" placeholder="Scholarship Description" className="textarea textarea-bordered h-24 w-full" required ></textarea>
             </label>
           </div>
           <div className="grid md:grid-cols-2 gap-5 border-[2px] p-4 border-info">

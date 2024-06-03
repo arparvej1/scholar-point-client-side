@@ -28,6 +28,7 @@ const UpdateScholarship = () => {
     serviceCharge,
     applicationDeadline,
     scholarshipPostDate,
+    scholarshipDescription,
     // postedUserEmail,
     // postedUserDisplayName
   } = scholarship;
@@ -49,6 +50,7 @@ const UpdateScholarship = () => {
     const new_serviceCharge = form.serviceCharge.value;
     const new_applicationDeadline = form.applicationDeadline.value;
     const new_scholarshipPostDate = form.scholarshipPostDate.value;
+    const new_scholarshipDescription = form.scholarshipDescription.value;
     const new_postedUserEmail = user.email;
     const new_postedUserDisplayName = user.displayName;
 
@@ -67,6 +69,7 @@ const UpdateScholarship = () => {
       new_serviceCharge: parseInt(new_serviceCharge),
       new_applicationDeadline,
       new_scholarshipPostDate,
+      new_scholarshipDescription,
       new_postedUserEmail,
       new_postedUserDisplayName
     }
@@ -198,6 +201,12 @@ const UpdateScholarship = () => {
             <label className="flex flex-col gap-1 w-full">
               <span>Application Deadline</span>
               <input type="date" name="applicationDeadline" defaultValue={applicationDeadline} min={new Date().toISOString().substring(0, 10)} className="input input-bordered w-full" required />
+            </label>
+          </div>
+          <div className="gap-5">
+            <label className="flex flex-col gap-1 w-full">
+              <span>Scholarship Description</span>
+              <textarea name="scholarshipDescription" defaultValue={scholarshipDescription} placeholder="Scholarship Description" className="textarea textarea-bordered h-24 w-full" required ></textarea>
             </label>
           </div>
           <div className="grid md:grid-cols-2 gap-5 border-[2px] p-4 border-info">
