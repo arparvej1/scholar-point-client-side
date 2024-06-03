@@ -69,15 +69,14 @@ const DetailsScholarship = () => {
 
   const handleAddReview = (e) => {
     e.preventDefault();
-
-    if (!reviewOneTime) return;
-    setReviewOneTime(false);
-
     if (reviewRating < 1) {
       return setRatingMsg('Please kindly provide a rating.');
     } else {
       setRatingMsg('');
     }
+
+    if (!reviewOneTime) return;
+    setReviewOneTime(false);
 
     const form = e.target;
     const comment = form.comment.value;
