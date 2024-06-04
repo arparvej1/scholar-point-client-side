@@ -15,6 +15,8 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import AddScholarship from "../pages/AllScholarship/AddScholarship/AddScholarship";
 import UpdateScholarship from "../pages/AllScholarship/UpdateScholarship/UpdateScholarship";
 import DetailsScholarship from "../pages/AllScholarship/DetailsScholarship/DetailsScholarship";
+import PaymentPage from "../pages/AllScholarship/PaymentPage/PaymentPage";
+import ScholarshipApplyForm from "../pages/AllScholarship/ScholarshipApply/ScholarshipApplyForm";
 
 const router = createBrowserRouter([
   {
@@ -67,6 +69,16 @@ const router = createBrowserRouter([
       {
         path: '/scholarship/:scholarshipId',
         element: <PrivateRoutes><DetailsScholarship></DetailsScholarship></PrivateRoutes>,
+        loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/scholarship/${params.scholarshipId}`)
+      },
+      {
+        path: '/payment/:scholarshipId',
+        element: <PrivateRoutes><PaymentPage></PaymentPage></PrivateRoutes>,
+        loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/scholarship/${params.scholarshipId}`)
+      },
+      {
+        path: '/scholarship-apply/:scholarshipId',
+        element: <PrivateRoutes><ScholarshipApplyForm></ScholarshipApplyForm></PrivateRoutes>,
         loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/scholarship/${params.scholarshipId}`)
       },
       // --------- User Dashboard End ------------

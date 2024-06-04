@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { AuthContext } from "../../../provider/AuthProvider";
 import ReactStars from "react-rating-stars-component";
@@ -30,11 +30,13 @@ const DetailsScholarship = () => {
     postedUserEmail,
     postedUserDisplayName
   } = scholarship;
+  const navigate = useNavigate();
 
   const handleApplyScholarship = () => {
     console.log('handleApplyScholarship', scholarship);
+    navigate(`/payment/${_id}`);
   };
-
+  // ---------------- review start ---------------------
   const [reviews, setReviews] = useState([]);
   const loadReview = () => {
     axios.get(`${import.meta.env.VITE_VERCEL_API}/reviewsFilter?scholarshipId=${_id}`)
@@ -109,6 +111,7 @@ const DetailsScholarship = () => {
       });
     // --------- send server end -----
   }
+  // ---------------- review end ---------------------
 
   return (
     <>
@@ -126,7 +129,7 @@ const DetailsScholarship = () => {
             <hr />
             <p className="text-justify"><span className="font-bold">University Rank:</span> {universityRank}</p>
             <p className="text-justify"><span className="font-bold">University Address:</span> {universityCity}, {universityCountry}</p>
-            <p className="text-justify"><span className="font-bold">Tuition Fees:</span> {tuitionFees}</p>
+            <p className="text-justify"><span className="font-bold">Application Fees:</span> {applicationFees}</p>
             <p className="text-justify"><span className="font-bold">Degree:</span> {degree}</p>
             <hr />
             <div className="flex flex-wrap gap-3">
@@ -144,7 +147,7 @@ const DetailsScholarship = () => {
           {/* TODO: <p className="text-justify"><span className="font-bold">Stipend:</span> {Stipend}</p> */}
           <p className="text-justify"><span className="font-bold">Post Date:</span> {scholarshipPostDate}</p>
           <p className="text-justify"><span className="font-bold">Service Charge:</span> {serviceCharge}</p>
-          <p className="text-justify"><span className="font-bold">Application Fees:</span> {applicationFees}</p>
+          <p className="text-justify"><span className="font-bold">Tuition Fees:</span> {tuitionFees}</p>
           <p className="text-justify"><span className="font-bold">Scholarship Description:</span> {scholarshipDescription}</p>
           <hr />
           <div>
