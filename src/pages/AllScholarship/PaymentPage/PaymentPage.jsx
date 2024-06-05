@@ -37,7 +37,6 @@ const PaymentPage = () => {
       <Helmet>
         <title> Payment | {scholarshipName} | ScholarPoint </title>
       </Helmet>
-      {/* <SectionTitle heading="Payment" subHeading="Please pay to eat"></SectionTitle> */}
       <div className="md:w-1/2 mx-auto border-2 rounded-2xl shadow-xl p-5 m-5">
         <Elements stripe={stripePromise}>
           <CheckoutForm

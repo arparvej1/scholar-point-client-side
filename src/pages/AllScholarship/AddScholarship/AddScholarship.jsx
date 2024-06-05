@@ -5,8 +5,6 @@ import { AuthContext } from "../../../provider/AuthProvider";
 import Swal from "sweetalert2";
 import { ToastContainer } from "react-toastify";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -15,7 +13,6 @@ const AddScholarship = () => {
   const { user, loginCheck } = useContext(AuthContext);
 
   const axiosPublic = useAxiosPublic();
-  const axiosSecure = useAxiosSecure();
 
   const uploadImage_imgbb = async (uploadImage) => {
     const data = uploadImage.files[0];
@@ -81,7 +78,7 @@ const AddScholarship = () => {
     console.log(completeItem);
 
     // --------- send server start -----
-    axios.post(`${import.meta.env.VITE_VERCEL_API}/Scholarships`, completeItem)
+    axios.post(`${import.meta.env.VITE_VERCEL_API}/scholarships`, completeItem)
       .then(function (response) {
         console.log(response.data);
         if (response.data.acknowledged) {
