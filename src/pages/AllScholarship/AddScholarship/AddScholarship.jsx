@@ -4,17 +4,45 @@ import { Helmet } from "react-helmet-async";
 import { AuthContext } from "../../../provider/AuthProvider";
 import Swal from "sweetalert2";
 import { ToastContainer } from "react-toastify";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
+
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AddScholarship = () => {
   const { user, loginCheck } = useContext(AuthContext);
 
-  const handleAddItem = (e) => {
+  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
+
+  const uploadImage_imgbb = async (uploadImage) => {
+    const data = uploadImage.files[0];
+    console.log(data)
+    // image upload to imgbb and then get an url
+    const imageFile = { image: data }
+    const res = await axiosPublic.post(image_hosting_api, imageFile, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    });
+    if (!res.data.success) {
+      return false
+    }
+    // console.log('with image url', res.data);
+    return res.data.data.display_url;
+  };
+
+  const handleAddItem = async (e) => {
     e.preventDefault();
+    const uploadImage = e.target.universityLogo;
+    const universityLogo = await uploadImage_imgbb(uploadImage);
+    if (!universityLogo) return;
+
     const form = e.target;
     const scholarshipName = form.scholarshipName.value;
     const universityName = form.universityName.value;
-    const universityLogo = form.universityLogo.value;
     const universityCountry = form.universityCountry.value;
     const universityCity = form.universityCity.value;
     const universityRank = form.universityRank.value;
@@ -76,6 +104,8 @@ const AddScholarship = () => {
     window.scrollTo(0, 0);
     loginCheck();
   }, []);
+
+
   return (
     <div>
       <Helmet>
@@ -101,7 +131,9 @@ const AddScholarship = () => {
           <div className="gap-5">
             <label className="flex flex-col gap-1 w-full">
               <span>University Logo</span>
-              <input type="text" name="universityLogo" placeholder="University Logo" className="input input-bordered w-full" required />
+              {/* <input type="text" name="universityLogo" placeholder="University Logo" className="input input-bordered w-full" required /> */}
+              <input type="file" name="universityLogo" className="file-input file-input-bordered w-full max-w-xs" />
+
             </label>
           </div>
           <div className="grid md:grid-cols-2 gap-5">
