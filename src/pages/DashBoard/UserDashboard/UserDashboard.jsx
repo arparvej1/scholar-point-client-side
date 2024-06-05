@@ -1,30 +1,19 @@
-import axios from "axios";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "../../../provider/AuthProvider";
+import { useEffect } from "react";
+import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 
 const UserDashboard = () => {
-
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    if (!loading) {
-      axios.get(`${import.meta.env.VITE_VERCEL_API}/users/${user.email}`, { withCredentials: true })
-        .then(function (response) {
-          // console.log(response.data);
-          if (response.data) {
-            console.log('Active User: ', user.email);
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
-  }, [loading]);
+    console.log(user.email);
+  }, [loading, user]);
 
   return (
     <div>
-      User Dashboard
+      User Dashboard: {user.displayName}
     </div>
   );
 };

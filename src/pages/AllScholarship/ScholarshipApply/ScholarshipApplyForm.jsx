@@ -18,10 +18,24 @@ const ScholarshipApplyForm = () => {
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
+  const [applyData, setApplyData] = useState(false);
+
+  const loadApplyData = async () => {
+    const res = await axiosSecure.get(`/scholarshipApply/${user.email}`)
+    console.log(res.data);
+    if (Array.isArray(res.data)) {
+      const filterApply = res.data.some(apply => apply.scholarshipId === _id);
+      if (filterApply) setApplyData(true);
+    }
+  };
+
+  useEffect(() => {
+    loadApplyData();
+  }, []);
 
   const loadPayments = async () => {
     const res = await axiosSecure.get(`/payments/${user.email}`)
-    console.log(res.data);
+    // console.log(res.data);
     if (Array.isArray(res.data)) {
       const scholarshipPayment = res.data.some(payment => payment.scholarshipId === scholarship._id);
       if (scholarshipPayment) return true;
@@ -63,6 +77,8 @@ const ScholarshipApplyForm = () => {
   const handleApplyForm = async (e) => {
     e.preventDefault();
 
+    if (applyData) return toast.warn('Already apply this scholarship.');
+
     const form = e.target;
     const applicantPhoneNumber = form.applicantPhoneNumber.value;
     const applicantAddressVillage = form.applicantAddressVillage.value;
@@ -76,8 +92,8 @@ const ScholarshipApplyForm = () => {
     const universityName = form.universityName.value;
     const scholarshipCategory = form.scholarshipCategory.value;
     const subjectCategory = form.subjectCategory.value;
-    const postedUserEmail = user.email;
-    const postedUserDisplayName = user.displayName;
+    const email = user.email;
+    const userDisplayName = user.displayName;
     const scholarshipId = scholarship._id;
     const applyDate = new Date().toISOString().substring(0, 10);
 
@@ -107,8 +123,8 @@ const ScholarshipApplyForm = () => {
       universityName,
       scholarshipCategory,
       subjectCategory,
-      postedUserEmail,
-      postedUserDisplayName,
+      email,
+      userDisplayName,
       scholarshipId,
       applyDate,
       applicantPhoto
@@ -121,6 +137,7 @@ const ScholarshipApplyForm = () => {
       .then(function (response) {
         console.log(response.data);
         if (response.data.acknowledged) {
+          loadApplyData();
           Swal.fire({
             title: 'Success!',
             text: 'Successfully Apply Scholarship!',
@@ -129,6 +146,7 @@ const ScholarshipApplyForm = () => {
           })
         }
         form.reset();
+        // navigate(`/scholarship/${_id}`);
       })
       .catch(function (error) {
         console.log(error);
