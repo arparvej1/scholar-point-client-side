@@ -117,22 +117,22 @@ const ScholarshipApplyForm = () => {
     console.log(completeApply);
 
     // --------- send server start -----
-    // axiosSecure.post(`${import.meta.env.VITE_VERCEL_API}/s_scholarships`, completeItem)
-    //   .then(function (response) {
-    //     console.log(response.data);
-    //     if (response.data.acknowledged) {
-    //       Swal.fire({
-    //         title: 'Success!',
-    //         text: 'Successfully Apply Scholarship!',
-    //         icon: 'success',
-    //         confirmButtonText: 'Okay'
-    //       })
-    //     }
-    //     form.reset();
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    axiosSecure.post(`${import.meta.env.VITE_VERCEL_API}/scholarshipApply`, completeApply)
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data.acknowledged) {
+          Swal.fire({
+            title: 'Success!',
+            text: 'Successfully Apply Scholarship!',
+            icon: 'success',
+            confirmButtonText: 'Okay'
+          })
+        }
+        form.reset();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     // --------- send server end -----
   };
 
