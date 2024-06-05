@@ -1,36 +1,40 @@
 import { Helmet } from "react-helmet-async";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const ScholarshipApplyForm = () => {
   const scholarship = useLoaderData();
   const { user } = useAuth();
   const { _id, scholarshipName } = scholarship;
   const axiosSecure = useAxiosSecure();
-  const [payments, setPayments] = useState([]);
-
-  // const { data: payments = [] } = useQuery({
-  //   queryKey: ['payments', user.email],
-  //   queryFn: async () => {
-  //     const res = await axiosSecure.get(`/payments/${user.email}`)
-  //     console.log(res.data);
-  //     return res.data;
-  //   }
-  // });
-
+  const navigate = useNavigate();
 
   const loadPayments = async () => {
     const res = await axiosSecure.get(`/payments/${user.email}`)
     console.log(res.data);
-    // setPayments(res.data);
+    if (Array.isArray(res.data)) {
+      const scholarshipPayment = res.data.some(payment => payment.scholarshipId === scholarship._id);
+      if (scholarshipPayment) return true;
+      return false;
+    } else {
+      console.log('Response data is not an array.');
+      return false;
+    }
   };
 
   useEffect(() => {
-    loadPayments();
-  }, [])
+    const fetchData = async () => {
+      const alreadyPurchased = await loadPayments();
+      if (!alreadyPurchased) {
+        console.log(alreadyPurchased);
+        navigate(`/scholarship/${_id}`);
+      }
+    };
+    fetchData();
+  }, []);
+
 
   return (
     <div>

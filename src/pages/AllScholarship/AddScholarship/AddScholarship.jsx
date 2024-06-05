@@ -128,12 +128,14 @@ const AddScholarship = () => {
               <input type="text" name="universityName" placeholder="University Name" className="input input-bordered w-full" required />
             </label>
           </div>
-          <div className="gap-5">
+          <div className="grid md:grid-cols-2 gap-5">
             <label className="flex flex-col gap-1 w-full">
               <span>University Logo</span>
-              {/* <input type="text" name="universityLogo" placeholder="University Logo" className="input input-bordered w-full" required /> */}
               <input type="file" name="universityLogo" className="file-input file-input-bordered w-full max-w-xs" />
-
+            </label>
+            <label className="flex flex-col gap-1 w-full">
+              <span>University Rank</span>
+              <input type="text" name="universityRank" placeholder="University Rank" className="input input-bordered w-full" required />
             </label>
           </div>
           <div className="grid md:grid-cols-2 gap-5">
@@ -144,12 +146,6 @@ const AddScholarship = () => {
             <label className="flex flex-col gap-1 w-full">
               <span>University City</span>
               <input type="text" name="universityCity" placeholder="University City" className="input input-bordered w-full" required />
-            </label>
-          </div>
-          <div className="gap-5">
-            <label className="flex flex-col gap-1 w-full">
-              <span>University Rank</span>
-              <input type="text" name="universityRank" placeholder="University Rank" className="input input-bordered w-full" required />
             </label>
           </div>
           <div className="grid md:grid-cols-2 gap-5">
