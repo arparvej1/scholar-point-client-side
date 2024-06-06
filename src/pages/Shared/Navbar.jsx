@@ -42,7 +42,7 @@ const Navbar = () => {
   const pNavLinks = <>
     {
       user && <>
-        <li><NavLink to='/profile'>Profile</NavLink></li>
+        <li><NavLink to='/dashboard/profile'>Profile</NavLink></li>
 
       </>
     }

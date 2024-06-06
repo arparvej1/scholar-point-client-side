@@ -13,7 +13,7 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 const ScholarshipApplyForm = () => {
   const scholarship = useLoaderData();
   const { user } = useAuth();
-  const { _id, scholarshipName, universityName, subjectCategory, scholarshipCategory } = scholarship;
+  const { _id, scholarshipName, universityName, subjectCategory, scholarshipCategory, applicationFees, serviceCharge } = scholarship;
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
@@ -127,7 +127,10 @@ const ScholarshipApplyForm = () => {
       userDisplayName,
       scholarshipId,
       applyDate,
-      applicantPhoto
+      applicantPhoto,
+      applicationFees: applicationFees,
+      serviceCharge: serviceCharge,
+      applicationStatus: 'pending'
     }
 
     console.log(completeApply);

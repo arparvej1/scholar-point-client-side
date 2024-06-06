@@ -4,7 +4,7 @@ import DashBoardSideBar from "../pages/Shared/DashBoardSideBar/DashBoardSideBar"
 const DashboardLayout = () => {
   return (
     <>
-      <div className="grid md:grid-cols-6">
+      <div className="md:grid md:grid-cols-6">
         <div className="col-span-1">
           <DashBoardSideBar></DashBoardSideBar>
         </div>

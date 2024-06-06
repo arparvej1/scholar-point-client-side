@@ -8,8 +8,8 @@ const DashBoardSideBar = () => {
   const navLinks = <>
     <li><Link className={`${location.pathname === "/dashboard" ? 'active' : undefined}`} to='/dashboard'>Dashboard</Link></li>
     <li><NavLink to='/dashboard/profile'>My Profile</NavLink></li>
-    <li><NavLink to='/'>My Application</NavLink></li>
-    <li><NavLink to='/'>My Reviews</NavLink></li>
+    <li><NavLink to='/dashboard/my-application'>My Application</NavLink></li>
+    <li><NavLink to='/dashboard/my-reviews'>My Reviews</NavLink></li>
     {
       isAdmin && <>
         <li><NavLink to='/add-scholarship'>Add Scholarship</NavLink></li>

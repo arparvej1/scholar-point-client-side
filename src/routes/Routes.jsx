@@ -18,6 +18,8 @@ import DetailsScholarship from "../pages/AllScholarship/DetailsScholarship/Detai
 import PaymentPage from "../pages/AllScholarship/PaymentPage/PaymentPage";
 import ScholarshipApplyForm from "../pages/AllScholarship/ScholarshipApply/ScholarshipApplyForm";
 import ScholarshipApplyDetails from "../pages/AllScholarship/ScholarshipApply/ScholarshipApplyDetails";
+import MyApplication from "../pages/DashBoard/UserDashboard/MyApplication/MyApplication";
+import MyReviews from "../pages/DashBoard/UserDashboard/MyReviews/MyReviews";
 
 const router = createBrowserRouter([
   {
@@ -47,7 +49,7 @@ const router = createBrowserRouter([
       },
       // -------- Admin Routes Start ------------
       {
-        path: '/profile2',
+        path: '/admin-profile',
         element: <PrivateRoutes><Profile></Profile></PrivateRoutes>
       },
       // -------- Admin Routes End ------------
@@ -96,6 +98,14 @@ const router = createBrowserRouter([
           {
             path: 'profile',
             element: <PrivateRoutes><Profile></Profile></PrivateRoutes>
+          },
+          {
+            path: 'my-application',
+            element: <PrivateRoutes><MyApplication></MyApplication></PrivateRoutes>
+          },
+          {
+            path: 'my-reviews',
+            element: <PrivateRoutes><MyReviews></MyReviews></PrivateRoutes>
           },
         ]
       },
