@@ -17,6 +17,7 @@ import UpdateScholarship from "../pages/AllScholarship/UpdateScholarship/UpdateS
 import DetailsScholarship from "../pages/AllScholarship/DetailsScholarship/DetailsScholarship";
 import PaymentPage from "../pages/AllScholarship/PaymentPage/PaymentPage";
 import ScholarshipApplyForm from "../pages/AllScholarship/ScholarshipApply/ScholarshipApplyForm";
+import ScholarshipApplyDetails from "../pages/AllScholarship/ScholarshipApply/ScholarshipApplyDetails";
 
 const router = createBrowserRouter([
   {
@@ -39,10 +40,6 @@ const router = createBrowserRouter([
       {
         path: '/all-scholarship',
         element: <AllScholarship></AllScholarship>
-      },
-      {
-        path: '/profile',
-        element: <PrivateRoutes><Profile></Profile></PrivateRoutes>
       },
       {
         path: '/update-profile',
@@ -81,6 +78,11 @@ const router = createBrowserRouter([
         element: <PrivateRoutes><ScholarshipApplyForm></ScholarshipApplyForm></PrivateRoutes>,
         loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/scholarship/${params.scholarshipId}`)
       },
+      {
+        path: '/scholarship-apply-details/:applyId',
+        element: <PrivateRoutes><ScholarshipApplyDetails></ScholarshipApplyDetails></PrivateRoutes>,
+        loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/apply/${params.applyId}`)
+      },
       // --------- User Dashboard End ------------
       {
         path: '/dashboard',
@@ -90,6 +92,10 @@ const router = createBrowserRouter([
           {
             path: '',
             element: <PrivateRoutes><UserDashboard></UserDashboard></PrivateRoutes>
+          },
+          {
+            path: 'profile',
+            element: <PrivateRoutes><Profile></Profile></PrivateRoutes>
           },
         ]
       },
