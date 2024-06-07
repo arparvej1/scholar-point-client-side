@@ -63,7 +63,7 @@ const MyApplication = () => {
         <title> My Applications | ScholarPoint </title>
       </Helmet>
       <h2 className='text-center p-3 my-3 md:my-0 bg-accent text-accent-content font-semibold rounded-xl text-lg md:text-xl lg:text-2xl'>My Applications</h2>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto m-3 border-2 p-3 rounded-lg">
         <table className="table">
           {/* head */}
           <thead>

@@ -10,10 +10,32 @@ import { ToastContainer, toast } from "react-toastify";
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
-const ScholarshipApplyForm = () => {
-  const scholarship = useLoaderData();
+const ScholarshipApplyFormEdit = () => {
+  const scholarshipApply = useLoaderData();
   const { user } = useAuth();
-  const { _id, scholarshipName, universityName, subjectCategory, scholarshipCategory, applicationFees, serviceCharge } = scholarship;
+  const {
+    _id,
+    applicantPhoneNumber,
+    applicantAddressVillage,
+    applicantAddressDistrict,
+    applicantAddressCountry,
+    applicantGender,
+    applicantApplyingDegree,
+    sscResult,
+    hscResult,
+    studyGap,
+    universityName,
+    scholarshipCategory,
+    subjectCategory,
+    email,
+    userDisplayName,
+    scholarshipId,
+    applyDate,
+    applicantPhoto,
+    applicationFees,
+    serviceCharge,
+    applicationStatus
+  } = scholarshipApply;
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
@@ -24,21 +46,11 @@ const ScholarshipApplyForm = () => {
     const res = await axiosSecure.get(`/scholarshipApply/${user.email}`)
     console.log(res.data);
     if (Array.isArray(res.data)) {
-      const filterApply = res.data.some(apply => apply.scholarshipId === _id);
-      if (filterApply) setApplyData(true);
-    }
-  };
-
-  useEffect(() => {
-    loadApplyData();
-  }, []);
-
-  const loadPayments = async () => {
-    const res = await axiosSecure.get(`/payments/${user.email}`)
-    // console.log(res.data);
-    if (Array.isArray(res.data)) {
-      const scholarshipPayment = res.data.some(payment => payment.scholarshipId === scholarship._id);
-      if (scholarshipPayment) return true;
+      const filterApply = res.data.some(apply => apply._id === _id);
+      if (filterApply) {
+        setApplyData(true)
+        return true
+      }
       return false;
     } else {
       console.log('Response data is not an array.');
@@ -48,10 +60,10 @@ const ScholarshipApplyForm = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const alreadyPurchased = await loadPayments();
-      if (!alreadyPurchased) {
-        console.log(alreadyPurchased);
-        navigate(`/scholarship/${_id}`);
+      const alreadyApply = await loadApplyData();
+      if (!alreadyApply) {
+        console.log('alreadyApply', alreadyApply);
+        navigate(`/all-scholarship`);
       }
     };
     fetchData();
@@ -77,7 +89,7 @@ const ScholarshipApplyForm = () => {
   const handleApplyForm = async (e) => {
     e.preventDefault();
 
-    if (applyData) return toast.warn('Already apply this scholarship.');
+    // if (applyData) return toast.warn('Already apply this scholarship.');
 
     const form = e.target;
     const applicantPhoneNumber = form.applicantPhoneNumber.value;
@@ -92,10 +104,10 @@ const ScholarshipApplyForm = () => {
     const universityName = form.universityName.value;
     const scholarshipCategory = form.scholarshipCategory.value;
     const subjectCategory = form.subjectCategory.value;
-    const email = user.email;
-    const userDisplayName = user.displayName;
-    const scholarshipId = scholarship._id;
-    const applyDate = new Date().toISOString().substring(0, 10);
+    // const email = user.email;
+    // const userDisplayName = user.displayName;
+    // const scholarshipId = scholarship._id;
+    // const applyDate = new Date().toISOString().substring(0, 10);
 
     const westernRegex = /^01\d{9}$/;
     if (!westernRegex.test(applicantPhoneNumber)) {
@@ -106,50 +118,51 @@ const ScholarshipApplyForm = () => {
       setErrorMessage('');
     }
 
-    const uploadImage = form.applicantPhoto;
-    const applicantPhoto = await uploadImage_imgbb(uploadImage);
-    if (!applicantPhoto) return;
+    const applicantPhoto = form.applicantPhoto.value;
+    // const uploadImage = form.applicantPhoto;
+    // const applicantPhoto = await uploadImage_imgbb(uploadImage);
+    // if (!applicantPhoto) return;
 
     const completeApply = {
-      applicantPhoneNumber,
-      applicantAddressVillage,
-      applicantAddressDistrict,
-      applicantAddressCountry,
-      applicantGender,
-      applicantApplyingDegree,
-      sscResult,
-      hscResult,
-      studyGap,
-      universityName,
-      scholarshipCategory,
-      subjectCategory,
-      email,
-      userDisplayName,
-      scholarshipId,
-      applyDate,
-      applicantPhoto,
-      applicationFees: applicationFees,
-      serviceCharge: serviceCharge,
-      applicationStatus: 'pending'
+      new_applicantPhoneNumber: applicantPhoneNumber,
+      new_applicantAddressVillage: applicantAddressVillage,
+      new_applicantAddressDistrict: applicantAddressDistrict,
+      new_applicantAddressCountry: applicantAddressCountry,
+      new_applicantGender: applicantGender,
+      new_applicantApplyingDegree: applicantApplyingDegree,
+      new_sscResult: sscResult,
+      new_hscResult: hscResult,
+      new_studyGap: studyGap,
+      new_universityName: universityName,
+      new_scholarshipCategory: scholarshipCategory,
+      new_subjectCategory: subjectCategory,
+      new_email: email,
+      new_userDisplayName: userDisplayName,
+      new_scholarshipId: scholarshipId,
+      new_applyDate: applyDate,
+      new_applicantPhoto: applicantPhoto,
+      new_applicationFees: applicationFees,
+      new_serviceCharge: serviceCharge,
+      new_applicationStatus: applicationStatus,
     }
 
     console.log(completeApply);
 
     // --------- send server start -----
-    axiosSecure.post(`/scholarshipApply`, completeApply)
+    axiosSecure.put(`/scholarshipApply/${_id}`, completeApply)
       .then(function (response) {
         console.log(response.data);
-        if (response.data.acknowledged) {
+        if (response.data.modifiedCount > 0) {
           loadApplyData();
           Swal.fire({
             title: 'Success!',
-            text: 'Successfully Apply Scholarship!',
+            text: 'Successfully Update Apply Scholarship!',
             icon: 'success',
             confirmButtonText: 'Okay'
           })
-        }
+          navigate(`/dashboard/scholarship-apply-details/${_id}`);
+        } else if (response.data.acknowledged) return toast.warn('Nothing Update!')
         form.reset();
-        // navigate(`/scholarship/${_id}`);
       })
       .catch(function (error) {
         console.log(error);
@@ -161,7 +174,7 @@ const ScholarshipApplyForm = () => {
   return (
     <div>
       <Helmet>
-        <title> Scholarship Apply Form | {scholarshipName} | ScholarPoint </title>
+        <title> Scholarship Apply Form Edit | ScholarPoint </title>
       </Helmet>
       {/* form start */}
       <div className="max-w-4xl mx-auto mt-5 bg-accent text-accent-content p-5 md:p-8 lg:p-10 rounded-xl">
@@ -170,28 +183,29 @@ const ScholarshipApplyForm = () => {
           <div className="gap-5">
             <label className="flex flex-col gap-1 w-full">
               <span>Applicant Phone Number</span>
-              <input type="tel" name="applicantPhoneNumber" placeholder="Applicant Phone Number" className="input input-bordered w-full" required />
+              <input type="tel" name="applicantPhoneNumber" defaultValue={applicantPhoneNumber} placeholder="Applicant Phone Number" className="input input-bordered w-full" required />
             </label>
             {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
           </div>
           <div className="gap-5">
             <label className="flex flex-col gap-1 w-full">
               <span>Applicant Photo</span>
-              <input type="file" name="applicantPhoto" className="file-input file-input-bordered w-full max-w-xs" required />
+              {/* <input type="file" name="applicantPhoto" className="file-input file-input-bordered w-full max-w-xs" required /> */}
+              <input type="text" name="applicantPhoto" value={applicantPhoto} placeholder="applicantPhoto" className="input input-bordered w-full" required />
             </label>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
             <label className="flex flex-col gap-1 w-full">
               <span>Applicant Address (Village)</span>
-              <input type="text" name="applicantAddressVillage" placeholder="Village" className="input input-bordered w-full" required />
+              <input type="text" name="applicantAddressVillage" defaultValue={applicantAddressVillage} placeholder="Village" className="input input-bordered w-full" required />
             </label>
             <label className="flex flex-col gap-1 w-full">
               <span>District</span>
-              <input type="text" name="applicantAddressDistrict" placeholder="District" className="input input-bordered w-full" required />
+              <input type="text" name="applicantAddressDistrict" defaultValue={applicantAddressDistrict} placeholder="District" className="input input-bordered w-full" required />
             </label>
             <label className="flex flex-col gap-1 w-full">
               <span>Country</span>
-              <input type="text" name="applicantAddressCountry" placeholder="Country" className="input input-bordered w-full" required />
+              <input type="text" name="applicantAddressCountry" defaultValue={applicantAddressCountry} placeholder="Country" className="input input-bordered w-full" required />
             </label>
           </div>
           <div className="grid md:grid-cols-2 gap-5">
@@ -199,37 +213,37 @@ const ScholarshipApplyForm = () => {
               <span>Applicant Gender</span>
               <select name="applicantGender" className="select select-bordered w-full" required>
                 <option disabled selected value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
+                <option selected={applicantGender === 'Male' ? true : false} value="Male">Male</option>
+                <option selected={applicantGender === 'Female' ? true : false} value="Female">Female</option>
+                <option selected={applicantGender === 'Other' ? true : false} value="Other">Other</option>
               </select>
             </label>
             <label className="flex flex-col gap-1 w-full">
               <span>Applicant Applying Degree</span>
               <select name="applicantApplyingDegree" className="select select-bordered w-full" required>
                 <option disabled selected value="">Select Degree</option>
-                <option value="Diploma">Diploma</option>
-                <option value="Bachelor">Bachelor</option>
-                <option value="Masters">Masters</option>
+                <option selected={applicantApplyingDegree === 'Diploma' ? true : false} value="Diploma">Diploma</option>
+                <option selected={applicantApplyingDegree === 'Bachelor' ? true : false} value="Bachelor">Bachelor</option>
+                <option selected={applicantApplyingDegree === 'Masters' ? true : false} value="Masters">Masters</option>
               </select>
             </label>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
             <label className="flex flex-col gap-1 w-full">
               <span>SSC Result</span>
-              <input type="text" name="sscResult" placeholder="SSC Result" className="input input-bordered w-full" required />
+              <input type="text" name="sscResult" defaultValue={sscResult} placeholder="SSC Result" className="input input-bordered w-full" required />
             </label>
             <label className="flex flex-col gap-1 w-full">
               <span>HSC Result</span>
-              <input type="text" name="hscResult" placeholder="HSC Result" className="input input-bordered w-full" required />
+              <input type="text" name="hscResult" defaultValue={hscResult} placeholder="HSC Result" className="input input-bordered w-full" required />
             </label>
             <label className="flex flex-col gap-1 w-full">
               <span>Study Gap</span>
               <select name="studyGap" className="select select-bordered w-full">
                 <option disabled selected value="">Select Study Gap</option>
-                <option value="0-1 years">0-1 years</option>
-                <option value="1-2 years">1-2 years</option>
-                <option value="2+ years">2+ years</option>
+                <option selected={studyGap === '0-1 years' ? true : false} value="0-1 years">0-1 years</option>
+                <option selected={studyGap === '1-2 years' ? true : false} value="1-2 years">1-2 years</option>
+                <option selected={studyGap === '2+ years' ? true : false} value="2+ years">2+ years</option>
               </select>
             </label>
           </div>
@@ -253,7 +267,7 @@ const ScholarshipApplyForm = () => {
           </div>
           <div className="gap-5">
             <label className="flex flex-col gap-1 w-full">
-              <input type="submit" value="Apply Now" className="btn bg-secondary text-secondary-content w-full" />
+              <input type="submit" value="Update Apply Information" className="btn bg-secondary text-secondary-content w-full" />
             </label>
           </div>
         </form>
@@ -264,4 +278,4 @@ const ScholarshipApplyForm = () => {
   );
 };
 
-export default ScholarshipApplyForm;
+export default ScholarshipApplyFormEdit;

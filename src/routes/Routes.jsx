@@ -20,6 +20,7 @@ import ScholarshipApplyForm from "../pages/AllScholarship/ScholarshipApply/Schol
 import ScholarshipApplyDetails from "../pages/AllScholarship/ScholarshipApply/ScholarshipApplyDetails";
 import MyApplication from "../pages/DashBoard/UserDashboard/MyApplication/MyApplication";
 import MyReviews from "../pages/DashBoard/UserDashboard/MyReviews/MyReviews";
+import ScholarshipApplyFormEdit from "../pages/AllScholarship/ScholarshipApply/ScholarshipApplyFormEdit";
 
 const router = createBrowserRouter([
   {
@@ -105,6 +106,11 @@ const router = createBrowserRouter([
           {
             path: 'scholarship-apply-details/:applyId',
             element: <PrivateRoutes><ScholarshipApplyDetails></ScholarshipApplyDetails></PrivateRoutes>,
+            loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/apply/${params.applyId}`)
+          },
+          {
+            path: 'scholarship-apply-edit/:applyId',
+            element: <PrivateRoutes><ScholarshipApplyFormEdit></ScholarshipApplyFormEdit></PrivateRoutes>,
             loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/apply/${params.applyId}`)
           },
         ]

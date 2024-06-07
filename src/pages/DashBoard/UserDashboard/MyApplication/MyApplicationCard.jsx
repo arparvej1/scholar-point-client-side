@@ -25,6 +25,7 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
 
   const handleEditApplication = () => {
     // Implement edit application logic
+    navigate(`/dashboard/scholarship-apply-edit/${_id}`)
   };
 
   const handleAddReview = () => {
