@@ -63,7 +63,7 @@ const ScholarshipReviewDisplay = ({ reviews }) => {
 };
 
 ScholarshipReviewDisplay.propTypes = {
-  reviews: PropTypes.object
+  reviews: PropTypes.array
 };
 
 export default ScholarshipReviewDisplay;

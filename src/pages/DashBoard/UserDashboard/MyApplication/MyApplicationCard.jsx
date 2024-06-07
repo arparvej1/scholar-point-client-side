@@ -139,10 +139,14 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
       <td>{applicationFees}</td>
       <td>{serviceCharge}</td>
       <td>{applicationStatus}</td>
-      <td className='text-center text-lg'><button title='Details' onClick={handleViewDetails}><BiDetail /></button></td>
-      <td className='text-center text-lg'><button title='Edit' onClick={handleEditApplication}><FaRegEdit /></button></td>
-      <td className='text-center text-lg'><button title='Cancel' onClick={() => handleCancelApplication(_id)}><MdCancel /></button></td>
-      <td className='text-center text-lg'><button title='Add Review' onClick={() => handleAddReviewBtn(scholarshipId)}><MdOutlineRateReview /></button></td>
+      <td className='text-lg'>
+        <div className='flex gap-3'>
+          <button className='text-blue-600' title='Details' onClick={handleViewDetails}><BiDetail /></button>
+          <button className='text-yellow-600' title='Edit' onClick={handleEditApplication}><FaRegEdit /></button>
+          <button className='text-red-600' title='Cancel' onClick={() => handleCancelApplication(_id)}><MdCancel /></button>
+        </div>
+      </td>
+      <td className='text-center text-lg'><button className='text-secondary' title='Add Review' onClick={() => handleAddReviewBtn(scholarshipId)}><MdOutlineRateReview /></button></td>
       {/* ---------- review modal add --------- */}
       <div>
         {/* You can open the modal using document.getElementById('ID').showModal() method */}
