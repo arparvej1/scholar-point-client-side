@@ -9,7 +9,6 @@ const Profile = () => {
   
   useEffect(() => {
     window.scrollTo(0, 0);
-    loginCheck();
     if (alreadyUpdate) {
       toast.success('Successfully Update!');
       setAlreadyUpdate(false);

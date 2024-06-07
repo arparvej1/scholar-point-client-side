@@ -5,12 +5,11 @@ import { ToastContainer } from 'react-toastify';
 import { AuthContext } from '../../../provider/AuthProvider';
 
 const UpdateProfile = () => {
-  const { user, updateUserInfo, setLoading, setAvatarIcon, setAlreadyUpdate, loginCheck } = useContext(AuthContext);
+  const { user, updateUserInfo, setLoading, setAvatarIcon, setAlreadyUpdate } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    loginCheck();
   }, []);
 
   const handleUpdateUser = (e) => {

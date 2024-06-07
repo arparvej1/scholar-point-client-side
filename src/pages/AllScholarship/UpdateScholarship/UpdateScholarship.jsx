@@ -8,7 +8,7 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 
 
 const UpdateScholarship = () => {
-  const { user, loginCheck } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const scholarship = useLoaderData();
@@ -99,7 +99,6 @@ const UpdateScholarship = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    loginCheck();
   }, []);
   return (
     <div>

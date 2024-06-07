@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaList } from "react-icons/fa";
 import { IoGrid } from "react-icons/io5";
-import { AuthContext } from "../../../provider/AuthProvider";
 import Swal from "sweetalert2";
 import axios from "axios";
 // import CheckLibrarian from "../../User/Librarian/CheckLibrarian";
-import { IoIosArrowDown } from "react-icons/io";
 import { ToastContainer } from "react-toastify";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
@@ -16,7 +14,6 @@ import ScholarshipCard from "../ScholarshipCard/ScholarshipCard";
 
 
 const AllScholarship = () => {
-  const { loginCheck } = useContext(AuthContext);
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   // const activeAgent = CheckLibrarian(true);
@@ -144,7 +141,6 @@ const AllScholarship = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    loginCheck();
   }, []);
 
   return (

@@ -36,27 +36,12 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
     navigate(`/dashboard/scholarship-apply-edit/${_id}`)
   };
 
-  const [thisScholarship, setThisScholarship] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axiosSecure.get(`/scholarship/${scholarshipId}`);
-        setThisScholarship(res.data);
-        console.log('single scholarship', res.data);
-      } catch (error) {
-        console.error('Error fetching applied scholarships:', error);
-      }
-    };
-    fetchData();
-  }, []);
-
   // ---------------- review start ---------------------
   const [reviews, setReviews] = useState([]);
   const loadReview = async () => {
     try {
-      const response = await axiosSecure.get(`/reviewsFilter?scholarshipId=${scholarshipId}`);
-      console.log('reviews', response.data);
+      const response = await axiosSecure.get(`/myReviews/${user.email}`);
+      // console.log('reviews', response.data);
       setReviews(response.data);
     } catch (error) {
       console.log(error);
@@ -67,12 +52,28 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
     loadReview();
   }, []);
 
-  const handleAddReviewBtn = () => {
-    if (reviews.find(review => review.reviewerEmail.toLowerCase() === user.email.toLowerCase())) {
+  const [thisScholarship, setThisScholarship] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axiosSecure.get(`/scholarship/${scholarshipId}`);
+        setThisScholarship(res.data);
+        // console.log('single scholarship', res.data);
+      } catch (error) {
+        console.error('Error fetching applied scholarships:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleAddReviewBtn = (id) => {
+    // console.log('click scholarshipId', id);
+    if (reviews.find(review => review.scholarshipId === id)) {
       toast.warn('Already reviewed the scholarship!');
       return;
     }
-    document.getElementById('addReviewModal').showModal();
+    document.getElementById(`addReviewModal${_id}`).showModal();
   };
 
   const [reviewRating, setReviewRating] = useState(0);
@@ -83,7 +84,7 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
   };
   const [reviewOneTime, setReviewOneTime] = useState(true);
 
-  const handleAddReview = (e) => {
+  const handleAddReview = async (e) => {
     e.preventDefault();
     if (reviewRating < 1) {
       return setRatingMsg('Please kindly provide a rating.');
@@ -112,11 +113,11 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
 
     console.log(completeReview);
     // --------- send server start ----- 
-    axiosSecure.post(`/reviews`, completeReview)
+    await axiosSecure.post(`/reviews`, completeReview)
       .then(function (response) {
         console.log(response.data);
         if (response.data.acknowledged) {
-          document.getElementById('addReviewModal').close();
+          document.getElementById(`addReviewModal${_id}`).close();
           toast.success('Thanks for Review!');
           loadReview();
           form.reset();
@@ -141,11 +142,11 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
       <td className='text-center text-lg'><button title='Details' onClick={handleViewDetails}><BiDetail /></button></td>
       <td className='text-center text-lg'><button title='Edit' onClick={handleEditApplication}><FaRegEdit /></button></td>
       <td className='text-center text-lg'><button title='Cancel' onClick={() => handleCancelApplication(_id)}><MdCancel /></button></td>
-      <td className='text-center text-lg'><button title='Add Review' onClick={handleAddReviewBtn}><MdOutlineRateReview /></button></td>
+      <td className='text-center text-lg'><button title='Add Review' onClick={() => handleAddReviewBtn(scholarshipId)}><MdOutlineRateReview /></button></td>
       {/* ---------- review modal add --------- */}
       <div>
         {/* You can open the modal using document.getElementById('ID').showModal() method */}
-        <dialog id="addReviewModal" className="modal">
+        <dialog id={`addReviewModal${_id}`} className="modal">
           <div className="modal-box">
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}

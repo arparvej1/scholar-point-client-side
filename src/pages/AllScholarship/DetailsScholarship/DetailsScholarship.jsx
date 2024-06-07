@@ -59,17 +59,16 @@ const DetailsScholarship = () => {
   };
   // ---------------- review start ---------------------
   const [reviews, setReviews] = useState([]);
-  const loadReview = () => {
-    axios.get(`${import.meta.env.VITE_VERCEL_API}/reviewsFilter?scholarshipId=${_id}`)
-      .then(function (response) {
-        console.log(response.data);
-        setReviews(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const loadReview = async () => {
+    try {
+      const response = await axiosSecure.get(`/reviewsFilter?scholarshipId=${_id}`);
+      console.log(response.data);
+      setReviews(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
-
+  
   useEffect(() => {
     loadReview();
   }, []);
