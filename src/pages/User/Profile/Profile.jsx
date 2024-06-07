@@ -16,7 +16,7 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className='md:4/5 lg:w-2/3 mx-auto mb-5'>
+    <div className='md:4/5 mx-auto mb-5'>
       <Helmet>
         <title> My Profile | ScholarPoint </title>
       </Helmet>

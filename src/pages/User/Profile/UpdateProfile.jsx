@@ -22,7 +22,7 @@ const UpdateProfile = () => {
       .then(() => {
         console.log('click Update');
         setLoading(false);
-        navigate('/profile');
+        navigate('/dashboard/profile');
         setAlreadyUpdate(true);
         setAvatarIcon(true);
       })
