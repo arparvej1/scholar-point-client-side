@@ -2,32 +2,32 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
-const CheckAdmin = () => {
+const CheckAgent = () => {
   const { user, loading } = useContext(AuthContext);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [adminLoading, setAdminLoading] = useState(true);
+  const [isAgent, setIsAgent] = useState(false);
+  const [agentLoading, setAgentLoading] = useState(true);
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
     if (user && !loading) {
-      axiosSecure.get(`/checkAdmin/${user?.email}`)
+      axiosSecure.get(`/checkagent/${user?.email}`)
         .then(res => {
           console.log(res.data);
-          setAdminLoading(false);
-          if (res.data.admin) {
-            setIsAdmin(true);
+          setAgentLoading(false);
+          if (res.data.agent) {
+            setIsAgent(true);
           }
-          // console.log('check Admin hit');
+          // console.log('check agent hit');
         })
         .catch(error => {
           console.log(error);
-          console.log('check Admin not hit');
+          console.log('check agent not hit');
         });
       // console.log(user.email);
     }
   }, [user, loading]);
 
-  return { isAdmin, adminLoading };
+  return { isAgent, agentLoading };
 };
 
-export default CheckAdmin;
+export default CheckAgent;
