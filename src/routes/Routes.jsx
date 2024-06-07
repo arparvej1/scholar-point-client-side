@@ -10,7 +10,6 @@ import PrivateRoutes from "../PrivateRoutes/PrivateRoutes";
 import Profile from "../pages/User/Profile/Profile";
 import UpdateProfile from "../pages/User/Profile/UpdateProfile";
 import AllScholarship from "../pages/AllScholarship/AllScholarship/AllScholarship";
-import UserDashboard from "../pages/DashBoard/UserDashboard/UserDashboard";
 import DashboardLayout from "../layouts/DashboardLayout";
 import AddScholarship from "../pages/AllScholarship/AddScholarship/AddScholarship";
 import UpdateScholarship from "../pages/AllScholarship/UpdateScholarship/UpdateScholarship";
@@ -21,6 +20,7 @@ import ScholarshipApplyDetails from "../pages/AllScholarship/ScholarshipApply/Sc
 import MyApplication from "../pages/DashBoard/UserDashboard/MyApplication/MyApplication";
 import MyReviews from "../pages/DashBoard/UserDashboard/MyReviews/MyReviews";
 import ScholarshipApplyFormEdit from "../pages/AllScholarship/ScholarshipApply/ScholarshipApplyFormEdit";
+import Dashboard from "../pages/DashBoard/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -86,11 +86,11 @@ const router = createBrowserRouter([
         path: '/dashboard',
         element: <PrivateRoutes><DashboardLayout></DashboardLayout></PrivateRoutes>,
         children: [
-          // --------- User Dashboard Start in Dashboard ------------
           {
             path: '',
-            element: <PrivateRoutes><UserDashboard></UserDashboard></PrivateRoutes>
+            element: <PrivateRoutes><Dashboard></Dashboard></PrivateRoutes>
           },
+          // --------- User Dashboard Start in Dashboard ------------
           {
             path: 'profile',
             element: <PrivateRoutes><Profile></Profile></PrivateRoutes>
@@ -113,6 +113,10 @@ const router = createBrowserRouter([
             element: <PrivateRoutes><ScholarshipApplyFormEdit></ScholarshipApplyFormEdit></PrivateRoutes>,
             loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/apply/${params.applyId}`)
           },
+          // --------- Agent Dashboard Start in Dashboard ------------
+
+          // --------- Admin Dashboard Start in Dashboard ------------
+
         ]
       },
     ]

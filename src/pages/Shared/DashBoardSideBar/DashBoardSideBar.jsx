@@ -6,7 +6,7 @@ const DashBoardSideBar = () => {
   const isAdmin = useState(true);
 
   const navLinks = <>
-    <li><Link className={`${location.pathname === "/dashboard" ? 'active' : undefined}`} to='/dashboard'>Dashboard</Link></li>
+    <li><Link className={`${location.pathname === "/dashboard" || location.pathname === "/dashboard/agent" || location.pathname === "/dashboard/admin" ? 'active' : undefined}`} to='/dashboard'>Dashboard</Link></li>
     <li><NavLink to='/dashboard/profile'>My Profile</NavLink></li>
     <li><NavLink to='/dashboard/my-application'>My Application</NavLink></li>
     <li><NavLink to='/dashboard/my-reviews'>My Reviews</NavLink></li>

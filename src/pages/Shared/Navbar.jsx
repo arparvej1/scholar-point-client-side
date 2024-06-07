@@ -7,6 +7,10 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 
 const Navbar = () => {
   const { user, logOut, avatarIcon } = useContext(AuthContext);
+  // const isAdmin = useState(true);
+  // const isAgent = useState(true);
+
+  // -------- theme start -----------------
   const [theme, setTheme] = useState(localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light');
 
   useEffect(() => {
@@ -23,6 +27,7 @@ const Navbar = () => {
       setTheme('light');
     }
   };
+  // -------- theme end -----------------
 
   const handleLogOut = () => {
     logOut()
@@ -32,7 +37,6 @@ const Navbar = () => {
   const navLinks = <>
     <li><NavLink to='/'>Home</NavLink></li>
     <li><NavLink to='/all-scholarship'>All Scholarship</NavLink></li>
-    <li><NavLink to='/add-scholarship'>Add Scholarship</NavLink></li>
     {
       user && <>
         <li><NavLink to='/dashboard'>Dashboard</NavLink></li>

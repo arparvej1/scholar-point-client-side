@@ -68,7 +68,6 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   }
 
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, currentUser => {
       setUser(currentUser);
@@ -94,33 +93,6 @@ const AuthProvider = ({ children }) => {
       return unsubscribe();
     }
   }, [axiosPublic])
-
-
-  // useEffect(() => {
-  //   const unSubscribe = onAuthStateChanged(auth, currentUser => {
-  //     const userEmail = currentUser?.email || user?.email;
-  //     const loggedUser = { email: userEmail };
-  //     setUser(currentUser);
-  //     console.log('current user', currentUser);
-  //     // if user exists then issue a token
-  //     if (currentUser) {
-  //       axios.post(`${import.meta.env.VITE_VERCEL_API}/jwt`, loggedUser, { withCredentials: true })
-  //         .then(res => {
-  //           console.log('token response', res.data);
-  //           setLoading(false);
-  //         })
-  //     }
-  //     else {
-  //       axios.post(`${import.meta.env.VITE_VERCEL_API}/logout`, loggedUser, { withCredentials: true })
-  //         .then(res => {
-  //           console.log(res.data);
-  //           setLoading(false);
-  //         })
-  //     }
-  //   });
-
-  //   return () => unSubscribe();
-  // }, []);
 
   const authInfo = {
     user,
