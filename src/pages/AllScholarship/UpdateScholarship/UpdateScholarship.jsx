@@ -33,7 +33,7 @@ const UpdateScholarship = () => {
     // postedUserDisplayName
   } = scholarship;
 
-  const handleAddItem = (e) => {
+  const handleUpdateItem = (e) => {
     e.preventDefault();
     const form = e.target;
     const new_scholarshipName = form.scholarshipName.value;
@@ -108,7 +108,7 @@ const UpdateScholarship = () => {
       <div className="max-w-4xl mx-auto mt-5 bg-accent text-accent-content p-5 md:p-8 lg:p-10 rounded-xl">
         <h3 className="text-2xl md:text-3xl text-center mb-6 font-semibold mx-auto">Update Scholarship</h3>
         <form
-          onSubmit={handleAddItem}
+          onSubmit={handleUpdateItem}
           className="flex flex-col gap-5">
           <div className="gap-5">
             <label className="flex flex-col gap-1 w-full">
