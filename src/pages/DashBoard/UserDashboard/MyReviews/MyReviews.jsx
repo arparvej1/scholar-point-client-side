@@ -3,23 +3,24 @@ import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import MyReviewCard from './MyReviewCard';
 import Swal from 'sweetalert2';
 import useAuth from '../../../../hooks/useAuth';
+import { ToastContainer } from 'react-toastify';
 
 const MyReviews = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [reviews, setReviews] = useState([]);
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await axiosSecure.get(`/myReviews/${user.email}`);
-        setReviews(response.data);
-      } catch (error) {
-        console.error('Error fetching reviews:', error);
-      }
-    };
+  const loadReviews = async () => {
+    try {
+      const response = await axiosSecure.get(`/myReviews/${user.email}`);
+      setReviews(response.data);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
 
-    fetchReviews();
+  useEffect(() => {
+    loadReviews();
   }, []);
 
   const handleDeleteReview = async (_id) => {
@@ -34,7 +35,7 @@ const MyReviews = () => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.delete(`/reviews/${_id}`)
+        axiosSecure.delete(`/review/${_id}`)
           .then(function (response) {
             // handle success
             console.log(response.data);
@@ -78,11 +79,13 @@ const MyReviews = () => {
                 key={review._id}
                 review={review}
                 handleDeleteReview={handleDeleteReview}
+                loadReviews={loadReviews}
               />
             ))}
           </tbody>
         </table>
       </div>
+      <ToastContainer />
     </div>
   );
 };
