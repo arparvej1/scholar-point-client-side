@@ -4,7 +4,7 @@ import { BiDetail } from 'react-icons/bi';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdCancel, MdOutlineRateReview } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import useAuth from '../../../../hooks/useAuth';
 import ReactStars from "react-rating-stars-component";
@@ -26,7 +26,7 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
     scholarshipId,
     _id
   } = application;
-  
+
   const handleViewDetails = () => {
     navigate(`/dashboard/scholarship-apply-details/${_id}`)
   };
@@ -36,17 +36,31 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
     navigate(`/dashboard/scholarship-apply-edit/${_id}`)
   };
 
+  const [thisScholarship, setThisScholarship] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axiosSecure.get(`/scholarship/${scholarshipId}`);
+        setThisScholarship(res.data);
+        console.log('single scholarship', res.data);
+      } catch (error) {
+        console.error('Error fetching applied scholarships:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
   // ---------------- review start ---------------------
   const [reviews, setReviews] = useState([]);
-  const loadReview = () => {
-    axiosSecure.get(`/reviewsFilter?scholarshipId=${scholarshipId}`)
-      .then(function (response) {
-        console.log(response.data);
-        setReviews(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const loadReview = async () => {
+    try {
+      const response = await axiosSecure.get(`/reviewsFilter?scholarshipId=${scholarshipId}`);
+      console.log('reviews', response.data);
+      setReviews(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -88,10 +102,12 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
       reviewerImage: user.photoURL,
       reviewerName: user.displayName,
       reviewerEmail: user.email,
-      scholarshipId: scholarshipId,
       reviewDate,
       rating: parseInt(reviewRating),
-      comment
+      comment,
+      scholarshipId: scholarshipId,
+      universityName: thisScholarship.universityName,
+      scholarshipName: thisScholarship.scholarshipName
     };
 
     console.log(completeReview);
