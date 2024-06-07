@@ -50,21 +50,8 @@ const router = createBrowserRouter([
         element: <PrivateRoutes><UpdateProfile></UpdateProfile></PrivateRoutes>,
       },
       // -------- Admin Routes Start ------------
-      {
-        path: '/admin-profile',
-        element: <PrivateRoutes><Profile></Profile></PrivateRoutes>
-      },
       // -------- Admin Routes End ------------
       // -------- Agent Routes Start ------------
-      {
-        path: '/add-scholarship',
-        element: <AgentRoutes><AddScholarship></AddScholarship></AgentRoutes>
-      },
-      {
-        path: '/update-scholarship/:scholarshipId',
-        element: <PrivateRoutes><UpdateScholarship></UpdateScholarship></PrivateRoutes>,
-        loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/scholarship/${params.scholarshipId}`)
-      },
       // -------- Agent Routes End ------------
       // --------- User Dashboard Start ------------
       {
@@ -115,6 +102,15 @@ const router = createBrowserRouter([
             loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/apply/${params.applyId}`)
           },
           // --------- Agent Dashboard Start in Dashboard ------------
+          {
+            path: 'add-scholarship',
+            element: <AgentRoutes><AddScholarship></AddScholarship></AgentRoutes>
+          },
+          {
+            path: 'update-scholarship/:scholarshipId',
+            element: <AgentRoutes><UpdateScholarship></UpdateScholarship></AgentRoutes>,
+            loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/scholarship/${params.scholarshipId}`)
+          },
 
           // --------- Admin Dashboard Start in Dashboard ------------
 

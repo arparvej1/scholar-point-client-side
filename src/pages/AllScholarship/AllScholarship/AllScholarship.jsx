@@ -5,19 +5,18 @@ import { FaList } from "react-icons/fa";
 import { IoGrid } from "react-icons/io5";
 import Swal from "sweetalert2";
 import axios from "axios";
-// import CheckLibrarian from "../../User/Librarian/CheckLibrarian";
 import { ToastContainer } from "react-toastify";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import { BiDetail } from "react-icons/bi";
 import ScholarshipCard from "../ScholarshipCard/ScholarshipCard";
+import useUserPower from "../../../hooks/useUserPower";
 
 
 const AllScholarship = () => {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
-  // const activeAgent = CheckLibrarian(true);
-  const [activeAgent, setActiveAgent] = useState(true);
+  const { isAdmin, adminLoading, isAgent, agentLoading, isAgentOrAdmin, agentOrAdminLoading } = useUserPower();
   const [displayLayout, setDisplayLayout] = useState(localStorage.getItem('displayLayout') ? localStorage.getItem('displayLayout') : 'grid');
 
   // ----------------- pagination -----------------------
@@ -191,7 +190,7 @@ const AllScholarship = () => {
                       <td className="md:text-sm lg:text-base text-center">Application<br />Fees</td>
                       <td className="md:text-sm lg:text-base text-center">Details</td>
                       {
-                        activeAgent ?
+                        isAgentOrAdmin ?
                           <>
                             <td className="md:text-sm lg:text-base text-center">Update</td>
                             <td className="md:text-sm lg:text-base text-center">Delete</td>
@@ -214,10 +213,10 @@ const AllScholarship = () => {
                         <td className="md:text-sm lg:text-base text-center">{scholarship.applicationFees}</td>
                         <td className="md:text-sm lg:text-base text-center"><Link to={`/scholarship/${scholarship._id}`} className="btn btn-link text-xl"><BiDetail title="View Details" /></Link></td>
                         {
-                          activeAgent ?
+                          isAgentOrAdmin ?
                             <>
                               <td className="md:text-sm lg:text-base">
-                                <Link to={`/update-scholarship/${scholarship._id}`} className='btn btn-link text-xl text-center'><FiEdit title="Update scholarship" /></Link>
+                                <Link to={`/dashboard/update-scholarship/${scholarship._id}`} className='btn btn-link text-xl text-center'><FiEdit title="Update scholarship" /></Link>
                               </td>
                               <td className="md:text-sm lg:text-base">
                                 <button onClick={() => handleDelete(scholarship._id)} className='btn btn-link text-xl text-center'><RiDeleteBin2Fill title="Delete" />
@@ -241,7 +240,7 @@ const AllScholarship = () => {
                   scholarship={scholarship}
                   scholarships={scholarships}
                   setScholarships={setScholarships}
-                  activeAgent={activeAgent}
+                  isAgentOrAdmin={isAgentOrAdmin}
                   handleDelete={handleDelete}
                 ></ScholarshipCard>)
               }

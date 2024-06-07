@@ -7,8 +7,6 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 
 const Navbar = () => {
   const { user, logOut, avatarIcon } = useContext(AuthContext);
-  // const isAdmin = useState(true);
-  // const isAgent = useState(true);
 
   // -------- theme start -----------------
   const [theme, setTheme] = useState(localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light');
