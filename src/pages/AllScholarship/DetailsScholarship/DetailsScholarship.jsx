@@ -52,65 +52,6 @@ const DetailsScholarship = () => {
   useEffect(() => {
     loadReview();
   }, []);
-
-  const handleAddReviewBtn = () => {
-    if (reviews.find(review => review.reviewerEmail.toLowerCase() === user.email.toLowerCase())) {
-      toast.warn('Already reviewed the scholarship!');
-      return;
-    }
-    document.getElementById('addReviewModal').showModal();
-  };
-
-  const [reviewRating, setReviewRating] = useState(0);
-  const [ratingMsg, setRatingMsg] = useState('');
-  const ratingChanged = (newRating) => {
-    setReviewRating(newRating);
-    setRatingMsg('');
-  };
-  const [reviewOneTime, setReviewOneTime] = useState(true);
-
-  const handleAddReview = (e) => {
-    e.preventDefault();
-    if (reviewRating < 1) {
-      return setRatingMsg('Please kindly provide a rating.');
-    } else {
-      setRatingMsg('');
-    }
-
-    if (!reviewOneTime) return;
-    setReviewOneTime(false);
-
-    const form = e.target;
-    const comment = form.comment.value;
-    const reviewDate = form.reviewDate.value;
-
-    const completeReview = {
-      reviewerImage: user.photoURL,
-      reviewerName: user.displayName,
-      reviewerEmail: user.email,
-      scholarshipId: _id,
-      reviewDate,
-      rating: parseInt(reviewRating),
-      comment
-    };
-
-    console.log(completeReview);
-    // --------- send server start ----- 
-    axios.post(`${import.meta.env.VITE_VERCEL_API}/reviews`, completeReview)
-      .then(function (response) {
-        console.log(response.data);
-        if (response.data.acknowledged) {
-          document.getElementById('addReviewModal').close();
-          toast.success('Thanks for Review!');
-          loadReview();
-          form.reset();
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    // --------- send server end -----
-  }
   // ---------------- review end ---------------------
 
   return (
@@ -134,7 +75,6 @@ const DetailsScholarship = () => {
             <hr />
             <div className="flex flex-wrap gap-3">
               <button onClick={handleApplyScholarship} className="btn bg-secondary text-secondary-content hover:bg-primary border-gray-500 px-6">Apply Scholarship</button>
-              <button onClick={handleAddReviewBtn} className="btn bg-accent text-accent-content hover:bg-primary border-gray-500 px-6">Add Review</button>
             </div>
           </div>
         </div>
@@ -154,52 +94,7 @@ const DetailsScholarship = () => {
           </div>
         </div>
       </div>
-      {/* ---------- modal category add --------- */}
-      <div>
-        {/* You can open the modal using document.getElementById('ID').showModal() method */}
-        <dialog id="addReviewModal" className="modal">
-          <div className="modal-box">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-            </form>
-            <h3 className="font-bold text-lg text-center">Review</h3>
-            <form
-              onSubmit={handleAddReview}
-              className="flex flex-col gap-5">
-              <div className="grid grid-cols-1 gap-5">
-                <label className="flex flex-col gap-1 w-full">
-                  <span>Comment</span>
-                  <textarea name="comment" placeholder="Write your review here" className="textarea textarea-bordered h-24 w-full" required ></textarea>
-                </label>
-                <label className="flex gap-1 w-full items-center">
-                  <span>Rating: </span>
-                  <ReactStars
-                    count={5}
-                    onChange={ratingChanged}
-                    size={24}
-                    emptyIcon={<i className="far fa-star"></i>}
-                    halfIcon={<i className="fa fa-star-half-alt"></i>}
-                    fullIcon={<i className="fa fa-star"></i>}
-                    activeColor="#ffd700"
-                  />
-                </label>
-                {ratingMsg && <p className="text-red-500">{ratingMsg}</p>}
-                <label className="flex flex-col gap-1 w-full">
-                  <span>Review Date</span>
-                  <input type="date" name="reviewDate" value={new Date().toISOString().substring(0, 10)} className="input input-bordered w-full" required />
-                </label>
-              </div>
-              <div className="gap-5">
-                <label className="flex flex-col gap-1 w-full">
-                  <input type="submit" value="Submit" className="btn bg-secondary text-secondary-content w-full" />
-                </label>
-              </div>
-            </form>
-          </div>
-          <ToastContainer />
-        </dialog>
-      </div>
+      {/* ---------- review add --------- */}
       <div>
         {
           reviews.length > 0 &&

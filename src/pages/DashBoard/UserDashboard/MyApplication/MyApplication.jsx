@@ -4,6 +4,7 @@ import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import MyApplicationCard from './MyApplicationCard';
 import Swal from "sweetalert2";
 import { Helmet } from 'react-helmet-async';
+import { ToastContainer } from 'react-toastify';
 
 const MyApplication = () => {
   const { user } = useAuth();
@@ -77,8 +78,8 @@ const MyApplication = () => {
               <th className='text-center'>Application<br />Status</th>
               <th className='text-center'>Details</th>
               <th className='text-center'>Edit</th>
-              <th className='text-center'>Add <br />Review</th>
               <th className='text-center'>Cancel</th>
+              <th className='text-center'>Add <br />Review</th>
             </tr>
           </thead>
           {/* body */}
@@ -93,6 +94,7 @@ const MyApplication = () => {
           </tbody>
         </table>
       </div>
+      <ToastContainer />
     </div>
   );
 };

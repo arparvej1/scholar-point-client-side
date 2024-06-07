@@ -147,9 +147,9 @@ const ScholarshipApplyForm = () => {
             icon: 'success',
             confirmButtonText: 'Okay'
           })
+          navigate(`/dashboard/scholarship-apply-details/${response.data.insertedId}`);
         }
         form.reset();
-        // navigate(`/scholarship/${_id}`);
       })
       .catch(function (error) {
         console.log(error);
