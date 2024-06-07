@@ -17,9 +17,14 @@ const DashBoardSideBar = () => {
     {
       isAgentOrAdmin && <>
         <li><NavLink to='/dashboard/add-scholarship'>Add Scholarship</NavLink></li>
-        <li><NavLink to='/dashboard/add-scholarship'>Manage Scholarships</NavLink></li>
-        <li><NavLink to='/dashboard/add-scholarship'>All Reviews</NavLink></li>
-        <li><NavLink to='/dashboard/add-scholarship'>All applied Scholarships</NavLink></li>
+        <li><NavLink to='/dashboard/manage-scholarships'>Manage Scholarships</NavLink></li>
+        <li><NavLink to='/dashboard/all-reviews'>All Reviews</NavLink></li>
+        <li><NavLink to='/dashboard/all-applied-scholarship'>All applied Scholarships</NavLink></li>
+      </>
+    }
+    {
+      isAdmin && <>
+        <li><NavLink to='/dashboard/manage-users'>Manage Users</NavLink></li>
       </>
     }
   </>

@@ -22,6 +22,10 @@ import MyReviews from "../pages/DashBoard/UserDashboard/MyReviews/MyReviews";
 import ScholarshipApplyFormEdit from "../pages/AllScholarship/ScholarshipApply/ScholarshipApplyFormEdit";
 import Dashboard from "../pages/DashBoard/Dashboard";
 import AgentRoutes from "../PrivateRoutes/isAgent/AgentRoutes";
+import ManageScholarships from "../pages/DashBoard/AgentDashboard/ManageScholarships/ManageScholarships";
+import AllReviews from "../pages/DashBoard/AgentDashboard/AllReviews/AllReviews";
+import AllAppliedScholarship from "../pages/DashBoard/AgentDashboard/AllAppliedScholarship/AllAppliedScholarship";
+import ManageUsers from "../pages/DashBoard/AdminDashboard/ManageUsers/ManageUsers";
 
 const router = createBrowserRouter([
   {
@@ -111,9 +115,23 @@ const router = createBrowserRouter([
             element: <AgentRoutes><UpdateScholarship></UpdateScholarship></AgentRoutes>,
             loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/scholarship/${params.scholarshipId}`)
           },
-
+          {
+            path: 'manage-scholarships',
+            element: <AgentRoutes><ManageScholarships></ManageScholarships></AgentRoutes>
+          },
+          {
+            path: 'all-reviews',
+            element: <AgentRoutes><AllReviews></AllReviews></AgentRoutes>
+          },
+          {
+            path: 'all-applied-scholarship',
+            element: <AgentRoutes><AllAppliedScholarship></AllAppliedScholarship></AgentRoutes>
+          },
           // --------- Admin Dashboard Start in Dashboard ------------
-
+          {
+            path: 'manage-users',
+            element: <AgentRoutes><ManageUsers></ManageUsers></AgentRoutes>
+          },
         ]
       },
     ]
