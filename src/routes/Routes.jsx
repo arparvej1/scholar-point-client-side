@@ -80,11 +80,6 @@ const router = createBrowserRouter([
         element: <PrivateRoutes><ScholarshipApplyForm></ScholarshipApplyForm></PrivateRoutes>,
         loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/scholarship/${params.scholarshipId}`)
       },
-      {
-        path: '/scholarship-apply-details/:applyId',
-        element: <PrivateRoutes><ScholarshipApplyDetails></ScholarshipApplyDetails></PrivateRoutes>,
-        loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/apply/${params.applyId}`)
-      },
       // --------- User Dashboard End ------------
       {
         path: '/dashboard',
@@ -106,6 +101,11 @@ const router = createBrowserRouter([
           {
             path: 'my-reviews',
             element: <PrivateRoutes><MyReviews></MyReviews></PrivateRoutes>
+          },
+          {
+            path: 'scholarship-apply-details/:applyId',
+            element: <PrivateRoutes><ScholarshipApplyDetails></ScholarshipApplyDetails></PrivateRoutes>,
+            loader: ({ params }) => fetch(`${import.meta.env.VITE_VERCEL_API}/apply/${params.applyId}`)
           },
         ]
       },

@@ -54,7 +54,7 @@ const ScholarshipApplyDetails = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="card w-96 bg-base-100 shadow-xl">
+      <div className="card md:w-3/4 m-5 bg-base-100 shadow-xl">
         <figure>
           {applicantPhoto && <img src={applicantPhoto} alt="Applicant Photo" />}
         </figure>

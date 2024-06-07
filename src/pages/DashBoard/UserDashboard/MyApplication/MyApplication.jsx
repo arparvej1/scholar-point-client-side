@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import useAuth from '../../../../hooks/useAuth';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import MyApplicationCard from './MyApplicationCard';
+import Swal from "sweetalert2";
 import { Helmet } from 'react-helmet-async';
 
 const MyApplication = () => {
@@ -20,6 +21,41 @@ const MyApplication = () => {
     };
     fetchData();
   }, []);
+
+
+  const handleCancelApplication = _id => {
+    console.log(_id);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/apply/${_id}`)
+          .then(function (response) {
+            // handle success
+            console.log(response.data);
+            if (response.data.deletedCount > 0) {
+              Swal.fire(
+                'Deleted!',
+                'Your scholarship apply has been deleted.',
+                'success'
+              )
+              const remaining = myApply.filter(i => i._id !== _id);
+              setMyApply(remaining);
+            }
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+      }
+    })
+  }
 
   return (
     <div>
@@ -48,7 +84,11 @@ const MyApplication = () => {
           {/* body */}
           <tbody>
             {myApply.map((application) => (
-              <MyApplicationCard key={application._id} application={application} />
+              <MyApplicationCard
+                key={application._id}
+                application={application}
+                handleCancelApplication={handleCancelApplication}
+              />
             ))}
           </tbody>
         </table>
