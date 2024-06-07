@@ -9,21 +9,23 @@ const CheckAdmin = () => {
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    if (user && !loading) {
-      axiosSecure.get(`/checkAdmin/${user?.email}`)
-        .then(res => {
-          console.log(res.data);
-          setAdminLoading(false);
-          if (res.data.admin) {
-            setIsAdmin(true);
-          }
-          // console.log('check Admin hit');
-        })
-        .catch(error => {
-          console.log(error);
-          console.log('check Admin not hit');
-        });
-      // console.log(user.email);
+    if (!loading) {
+      if (user) {
+        axiosSecure.get(`/checkAdmin/${user.email}`)
+          .then(res => {
+            // console.log(res.data);
+            if (res.data.admin) {
+              setIsAdmin(true);
+            }
+            setAdminLoading(false);
+          })
+          .catch(error => {
+            console.log(error);
+            setAdminLoading(false);
+          });
+      } else {
+        setAdminLoading(false);
+      }
     }
   }, [user, loading]);
 

@@ -9,21 +9,23 @@ const CheckAgent = () => {
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    if (user && !loading) {
-      axiosSecure.get(`/checkagent/${user?.email}`)
-        .then(res => {
-          console.log(res.data);
-          setAgentLoading(false);
-          if (res.data.agent) {
-            setIsAgent(true);
-          }
-          // console.log('check agent hit');
-        })
-        .catch(error => {
-          console.log(error);
-          console.log('check agent not hit');
-        });
-      // console.log(user.email);
+    if (!loading) {
+      if (user) {
+        axiosSecure.get(`/checkagent/${user.email}`)
+          .then(res => {
+            // console.log(res.data);
+            if (res.data.agent) {
+              setIsAgent(true);
+            }
+            setAgentLoading(false);
+          })
+          .catch(error => {
+            console.log(error);
+            setAgentLoading(false);
+          });
+      } else {
+        setAgentLoading(false);
+      }
     }
   }, [user, loading]);
 

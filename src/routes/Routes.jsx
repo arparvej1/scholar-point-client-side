@@ -21,6 +21,7 @@ import MyApplication from "../pages/DashBoard/UserDashboard/MyApplication/MyAppl
 import MyReviews from "../pages/DashBoard/UserDashboard/MyReviews/MyReviews";
 import ScholarshipApplyFormEdit from "../pages/AllScholarship/ScholarshipApply/ScholarshipApplyFormEdit";
 import Dashboard from "../pages/DashBoard/Dashboard";
+import AgentRoutes from "../PrivateRoutes/isAgent/AgentRoutes";
 
 const router = createBrowserRouter([
   {
@@ -57,7 +58,7 @@ const router = createBrowserRouter([
       // -------- Agent Routes Start ------------
       {
         path: '/add-scholarship',
-        element: <PrivateRoutes><AddScholarship></AddScholarship></PrivateRoutes>
+        element: <AgentRoutes><AddScholarship></AddScholarship></AgentRoutes>
       },
       {
         path: '/update-scholarship/:scholarshipId',
