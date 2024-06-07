@@ -4,11 +4,12 @@ import { Helmet } from "react-helmet-async";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { AuthContext } from "../../../provider/AuthProvider";
-import ReactStars from "react-rating-stars-component";
 import ScholarshipReviewDisplay from "../ScholarshipReview/ScholarshipReviewDisplay";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const DetailsScholarship = () => {
   const { user } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
   const scholarship = useLoaderData();
   const {
     _id,
@@ -32,7 +33,27 @@ const DetailsScholarship = () => {
   } = scholarship;
   const navigate = useNavigate();
 
+  const [scholarshipApply, setScholarshipApply] = useState([]);
+  const loadScholarshipApply = () => {
+    axiosSecure.get(`/scholarshipApply/${user.email}`)
+      .then(function (response) {
+        console.log(response.data);
+        setScholarshipApply(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    loadScholarshipApply();
+  }, []);
+
   const handleApplyScholarship = () => {
+    if (scholarshipApply.find(apply => apply.scholarshipId === _id)) {
+      toast.warn('Already apply the scholarship!');
+      return;
+    }
     console.log('handleApplyScholarship', scholarship);
     navigate(`/payment/${_id}`);
   };
