@@ -3,10 +3,12 @@ import { Helmet } from 'react-helmet-async';
 import { ToastContainer, toast } from 'react-toastify';
 import { AuthContext } from '../../../provider/AuthProvider';
 import { Link } from 'react-router-dom';
+import useUserPower from '../../../hooks/useUserPower';
 
 const Profile = () => {
-  const { user, loginCheck, alreadyUpdate, setAlreadyUpdate } = useContext(AuthContext);
-  
+  const { user, alreadyUpdate, setAlreadyUpdate } = useContext(AuthContext);
+  const { isAdmin, isAgent } = useUserPower();
+
   useEffect(() => {
     window.scrollTo(0, 0);
     if (alreadyUpdate) {
@@ -29,6 +31,10 @@ const Profile = () => {
           <div className='flex flex-col gap-2'>
             <h3 className='text-xl font-semibold'>{user.displayName}</h3>
             <p>{user.email}</p>
+            <div className='flex'>
+              {isAdmin && <p className='p-2 m-1 bg-success rounded-xl text-white font-semibold'>Admin</p>}
+              {isAgent && <p className='p-2 m-1 bg-success rounded-xl text-white font-semibold'>Moderator</p>}
+            </div>
           </div>
           <div className='text-right  navbar-end'>
             <Link to='/update-profile' className='text-xl font-semibold underline btn btn-ghost text-blue-600'>Edit Profile</Link>

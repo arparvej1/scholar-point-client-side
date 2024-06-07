@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const ScholarshipCard = ({ scholarship, isAgentOrAdmin, handleDelete }) => {
+const ScholarshipCard = ({ scholarship, isAgentOrAdmin, handleDelete, manage }) => {
 
   const {
     _id,
@@ -41,15 +41,15 @@ const ScholarshipCard = ({ scholarship, isAgentOrAdmin, handleDelete }) => {
 
         </div>
       </div>
-      <div className='flex gap-5 justify-center'>
+      <div className="flex gap-5 justify-center">
         {
-          isAgentOrAdmin ? <>
+          isAgentOrAdmin && manage ? <>
             <Link to={`/dashboard/update-scholarship/${_id}`} className='btn bg-accent text-accent-content'>Update</Link>
             <button onClick={() => handleDelete(_id)} className='btn bg-secondary text-secondary-content'>Delete</button>
           </>
             : undefined
         }
-        <Link to={`/scholarship/${_id}`} className={`btn bg-primary text-primary-content ${!isAgentOrAdmin ? 'w-full' : undefined}`}> {!isAgentOrAdmin ? 'View' : undefined} Details</Link>
+        <Link to={`/scholarship/${_id}`} className={`btn bg-primary text-primary-content ${!isAgentOrAdmin || !manage ? 'w-full' : undefined}`}> {!isAgentOrAdmin || !manage ? 'View' : undefined} Details</Link>
       </div>
     </div>
   );
@@ -58,6 +58,7 @@ const ScholarshipCard = ({ scholarship, isAgentOrAdmin, handleDelete }) => {
 ScholarshipCard.propTypes = {
   scholarship: PropTypes.object,
   isAgentOrAdmin: PropTypes.bool,
+  manage: PropTypes.bool,
   handleDelete: PropTypes.func
 };
 

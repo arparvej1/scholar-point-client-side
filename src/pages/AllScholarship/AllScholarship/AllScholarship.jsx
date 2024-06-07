@@ -142,6 +142,8 @@ const AllScholarship = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const [manage, setManage] = useState(false);
+
   return (
     <div>
       <Helmet>
@@ -190,7 +192,7 @@ const AllScholarship = () => {
                       <td className="md:text-sm lg:text-base text-center">Application<br />Fees</td>
                       <td className="md:text-sm lg:text-base text-center">Details</td>
                       {
-                        isAgentOrAdmin ?
+                        isAgentOrAdmin && manage ?
                           <>
                             <td className="md:text-sm lg:text-base text-center">Update</td>
                             <td className="md:text-sm lg:text-base text-center">Delete</td>
@@ -213,7 +215,7 @@ const AllScholarship = () => {
                         <td className="md:text-sm lg:text-base text-center">{scholarship.applicationFees}</td>
                         <td className="md:text-sm lg:text-base text-center"><Link to={`/scholarship/${scholarship._id}`} className="btn btn-link text-xl"><BiDetail title="View Details" /></Link></td>
                         {
-                          isAgentOrAdmin ?
+                          isAgentOrAdmin && manage ?
                             <>
                               <td className="md:text-sm lg:text-base">
                                 <Link to={`/dashboard/update-scholarship/${scholarship._id}`} className='btn btn-link text-xl text-center'><FiEdit title="Update scholarship" /></Link>

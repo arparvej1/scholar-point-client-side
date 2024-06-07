@@ -11,12 +11,13 @@ const AdminDashboard = () => {
   const [allAdmin, setAllAdmin] = useState([]);
   const [allAgent, setAllAgent] = useState([]);
 
-  const loadReviews = async () => {
+  const loadAllAdminAndAgent = async () => {
     try {
-      const response = await axiosSecure.get(`/reviews`);
-      setReviews(response.data);
+      const res = await axiosSecure.get(`/allAdminAndAgent/${user.email}`);
+      setAllAdmin(res.data.allAdmin);
+      setAllAgent(res.data?.allAgent);
     } catch (error) {
-      console.error('Error fetching reviews:', error);
+      console.error('Error fetching applied scholarships:', error);
     }
   };
 
@@ -29,20 +30,19 @@ const AdminDashboard = () => {
     }
   };
 
-  const loadAllAdminAndAgent = async () => {
+  const loadReviews = async () => {
     try {
-      const res = await axiosSecure.get(`/allAdminAndAgent/${user.email}`);
-      setAllAdmin(res.data.allAdmin);
-      setAllAgent(res.data?.allAgent);
+      const response = await axiosSecure.get(`/reviews`);
+      setReviews(response.data);
     } catch (error) {
-      console.error('Error fetching applied scholarships:', error);
+      console.error('Error fetching reviews:', error);
     }
   };
 
   useEffect(() => {
-    loadReviews();
-    loadAllScholarshipApply();
     loadAllAdminAndAgent();
+    loadAllScholarshipApply();
+    loadReviews();
   }, []);
 
   return (
