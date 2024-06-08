@@ -5,7 +5,7 @@ import { MdCancel } from 'react-icons/md';
 
 const AppliedScholarshipRow = ({ application, allFunctions }) => {
   const { handleViewDetails, handleCancel, handleFeedback } = allFunctions;
- 
+
   return (
     <tr key={application._id}>
       <td>{application.universityName}</td>
@@ -19,7 +19,7 @@ const AppliedScholarshipRow = ({ application, allFunctions }) => {
       <td className="flex gap-2">
         <button className="text-xl text-blue-500" title="Details" onClick={() => handleViewDetails(application)}><BiDetail /></button>
         <button className="text-xl text-yellow-500" title="Feedback" onClick={() => handleFeedback(application)}><RiFeedbackLine /></button>
-        <button className="text-xl text-red-500" title="Cancel" onClick={() => handleCancel(application)}><MdCancel /></button>
+        <button className={`text-xl ${application.applicationStatus === 'rejected' ? 'text-gray-300' : 'text-red-500'} `} disabled={application.applicationStatus === 'rejected'} title="Cancel" onClick={() => handleCancel(application)}><MdCancel /></button>
       </td>
     </tr>
   );

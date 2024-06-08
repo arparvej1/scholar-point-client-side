@@ -4,7 +4,6 @@ import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { Helmet } from "react-helmet-async";
 import AppliedScholarshipRow from "./AppliedScholarshipRow";
 import Swal from "sweetalert2";
-import { toast } from "react-toastify";
 
 const AllAppliedScholarship = () => {
   const { user } = useAuth();
@@ -29,13 +28,10 @@ const AllAppliedScholarship = () => {
 
   const handleViewDetails = (application) => {
     setSelectedApplication(application);
-    console.log('click details', application);
     document.getElementById(`detailsViewModal${selectedApplication?._id}`).showModal();
   };
 
   const handleCancel = (application) => {
-    // setSelectedApplication(application);
-    console.log('click handleCancel', application);
     const new_applicationStatus = {
       new_applicationStatus: 'rejected',
     }
@@ -74,8 +70,35 @@ const AllAppliedScholarship = () => {
   };
 
   const handleFeedback = (application) => {
-    // setSelectedApplication(application);
+    setSelectedApplication(application);
+    document.getElementById(`feedbackModal${selectedApplication?._id}`).showModal();
     console.log('click handleFeedback', application);
+  };
+
+  const handleAddFeedback = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const feedback = form.feedback.value;
+    console.log(feedback);
+    // --------- send server start ----- 
+    await axiosSecure.put(`/scholarshipApplyFeedback/${selectedApplication._id}`, { applicantFeedback: feedback })
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data.modifiedCount > 0) {
+          document.getElementById(`feedbackModal${selectedApplication?._id}`).close();
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Thanks for feedback!",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    // --------- send server end -----
   };
 
   const allFunctions = { handleViewDetails, handleCancel, handleFeedback };
@@ -115,7 +138,7 @@ const AllAppliedScholarship = () => {
           ))}
         </tbody>
       </table>
-      {/* ---------- review modal add --------- */}
+      {/* ---------- detailsViewModal modal add --------- */}
       <div>
         {/* You can open the modal using document.getElementById('ID').showModal() method */}
         {selectedApplication &&
@@ -133,6 +156,35 @@ const AllAppliedScholarship = () => {
                   <p><span className="font-bold">Scholarship Category:</span> {selectedApplication.scholarshipCategory}</p>
                 </div>
               </div>
+            </div>
+          </dialog>}
+      </div>
+      {/* ---------- feedbackModal modal add --------- */}
+      <div>
+        {/* You can open the modal using document.getElementById('ID').showModal() method */}
+        {selectedApplication &&
+          <dialog id={`feedbackModal${selectedApplication?._id}`} className="modal">
+            <div className="modal-box">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+              </form>
+              <h3 className="font-bold text-lg text-center mb-2">Feedback</h3>
+              <form
+                onSubmit={handleAddFeedback}
+                className="flex flex-col gap-5">
+                <div className="grid grid-cols-1 gap-5">
+                  <label className="flex flex-col gap-1 w-full">
+                    <span>Feedback</span>
+                    <textarea name="feedback" placeholder="Write your feedback here" className="textarea textarea-bordered h-24 w-full" required ></textarea>
+                  </label>
+                </div>
+                <div className="gap-5">
+                  <label className="flex flex-col gap-1 w-full">
+                    <input type="submit" value="Submit" className="btn bg-secondary text-secondary-content w-full" />
+                  </label>
+                </div>
+              </form>
             </div>
           </dialog>}
       </div>

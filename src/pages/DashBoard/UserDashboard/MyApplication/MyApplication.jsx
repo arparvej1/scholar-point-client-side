@@ -76,6 +76,7 @@ const MyApplication = () => {
               <th className='text-center'>Application<br />Fees</th>
               <th className='text-center'>Service<br />Charge</th>
               <th className='text-center'>Application<br />Status</th>
+              <th className='text-center'>Feedback</th>
               <th className='text-center'>Actions</th>
               <th className='text-center'>Add <br />Review</th>
             </tr>

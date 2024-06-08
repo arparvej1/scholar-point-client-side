@@ -24,6 +24,7 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
     serviceCharge,
     applicationStatus,
     scholarshipId,
+    applicantFeedback,
     _id
   } = application;
 
@@ -139,6 +140,7 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
       <td>{applicationFees}</td>
       <td>{serviceCharge}</td>
       <td>{applicationStatus}</td>
+      <td>{applicantFeedback}</td>
       <td className='text-lg'>
         <div className='flex gap-3'>
           <button className='text-blue-600' title='Details' onClick={handleViewDetails}><BiDetail /></button>
