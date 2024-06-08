@@ -34,6 +34,7 @@ const ScholarshipApplyFormEdit = () => {
     applicantPhoto,
     applicationFees,
     serviceCharge,
+    scholarshipName,
     applicationStatus
   } = scholarshipApply;
   const axiosPublic = useAxiosPublic();
@@ -143,6 +144,7 @@ const ScholarshipApplyFormEdit = () => {
       new_applicantPhoto: applicantPhoto,
       new_applicationFees: applicationFees,
       new_serviceCharge: serviceCharge,
+      new_scholarshipName: scholarshipName,
       new_applicationStatus: applicationStatus,
     }
 

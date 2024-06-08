@@ -1,30 +1,15 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
 import { BiDetail } from "react-icons/bi";
-import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import { RiFeedbackLine } from 'react-icons/ri';
 import { MdCancel } from 'react-icons/md';
 
 const AppliedScholarshipRow = ({ application, allFunctions }) => {
-  const axiosSecure = useAxiosSecure();
-  const [scholarshipName, setScholarshipName] = useState('');
   const { handleViewDetails, handleCancel, handleFeedback } = allFunctions;
-  // const [selectedApplication, setSelectedApplication] = useState({ ...application });
-
-  useEffect(() => {
-    const loadApplyData = async () => {
-      const res = await axiosSecure.get(`/scholarship/${application?.scholarshipId}`)
-      // console.log(res.data);
-      setScholarshipName(res.data.scholarshipName);
-      // setSelectedApplication({ ...application, scholarshipName: res.data.scholarshipName });
-    };
-
-    loadApplyData();
-  }, []);
+ 
   return (
     <tr key={application._id}>
       <td>{application.universityName}</td>
-      <td>{scholarshipName}</td>
+      <td>{application.scholarshipName}</td>
       <td>{application.scholarshipCategory}</td>
       <td>{application.subjectCategory}</td>
       <td>{application.applicantApplyingDegree}</td>

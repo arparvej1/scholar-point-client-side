@@ -3,6 +3,8 @@ import useAuth from "../../../../hooks/useAuth";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { Helmet } from "react-helmet-async";
 import AppliedScholarshipRow from "./AppliedScholarshipRow";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 const AllAppliedScholarship = () => {
   const { user } = useAuth();
@@ -10,17 +12,16 @@ const AllAppliedScholarship = () => {
   const axiosSecure = useAxiosSecure();
   const [loading, setLoading] = useState(true);
 
+  const loadAppliedScholarships = async () => {
+    try {
+      const response = await axiosSecure.get(`${import.meta.env.VITE_VERCEL_API}/allScholarshipApply/${user.email}`);
+      setAppliedScholarships(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching applied scholarships:", error);
+    }
+  };
   useEffect(() => {
-    const loadAppliedScholarships = async () => {
-      try {
-        const response = await axiosSecure.get(`${import.meta.env.VITE_VERCEL_API}/allScholarshipApply/${user.email}`);
-        setAppliedScholarships(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching applied scholarships:", error);
-      }
-    };
-
     loadAppliedScholarships();
   }, []);
 
@@ -35,6 +36,41 @@ const AllAppliedScholarship = () => {
   const handleCancel = (application) => {
     // setSelectedApplication(application);
     console.log('click handleCancel', application);
+    const new_applicationStatus = {
+      new_applicationStatus: 'rejected',
+    }
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to reject it?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, reject it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // --------- send server start -----
+        axiosSecure.patch(`/scholarshipApply/${application._id}`, new_applicationStatus)
+          .then(function (response) {
+            console.log(response.data);
+            if (response.data.modifiedCount > 0) {
+              loadAppliedScholarships();
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Application Rejected!",
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        // --------- send server end -----
+      }
+    });
   };
 
   const handleFeedback = (application) => {

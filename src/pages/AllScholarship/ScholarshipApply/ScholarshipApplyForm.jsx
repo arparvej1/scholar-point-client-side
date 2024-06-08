@@ -128,6 +128,7 @@ const ScholarshipApplyForm = () => {
       scholarshipId,
       applyDate,
       applicantPhoto,
+      scholarshipName: scholarshipName,
       applicationFees: applicationFees,
       serviceCharge: serviceCharge,
       applicationStatus: 'pending'
