@@ -109,6 +109,7 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
       comment,
       scholarshipId: scholarshipId,
       universityName: thisScholarship.universityName,
+      subjectCategory: thisScholarship.subjectCategory,
       scholarshipName: thisScholarship.scholarshipName
     };
 

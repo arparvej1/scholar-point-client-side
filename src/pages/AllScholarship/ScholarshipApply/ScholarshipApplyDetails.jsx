@@ -61,7 +61,7 @@ const ScholarshipApplyDetails = () => {
         <div className="card-body">
           <h2 className="card-title">
             {userDisplayName}
-            <div className="badge badge-secondary">Applied</div>
+            {/* <div className="badge badge-secondary">Applied</div> */}
           </h2>
           <p><span className="font-bold">Applicant Phone Number:</span> {applicantPhoneNumber}</p>
           <p><span className="font-bold">Applicant Address:</span> {applicantAddressVillage}, {applicantAddressDistrict}, {applicantAddressCountry}</p>

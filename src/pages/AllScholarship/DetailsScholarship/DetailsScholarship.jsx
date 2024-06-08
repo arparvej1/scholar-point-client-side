@@ -33,6 +33,8 @@ const DetailsScholarship = () => {
   const navigate = useNavigate();
 
   const [scholarshipApply, setScholarshipApply] = useState([]);
+  const [alreadyApply, setAlreadyApply] = useState(false);
+
   const loadScholarshipApply = () => {
     axiosSecure.get(`/scholarshipApply/${user.email}`)
       .then(function (response) {
@@ -46,10 +48,15 @@ const DetailsScholarship = () => {
 
   useEffect(() => {
     loadScholarshipApply();
-  }, []);
+    if (scholarshipApply) {
+      if (scholarshipApply.find(apply => apply.scholarshipId === _id)) {
+        setAlreadyApply(true);
+      }
+    }
+  }, [scholarshipApply]);
 
   const handleApplyScholarship = () => {
-    if (scholarshipApply.find(apply => apply.scholarshipId === _id)) {
+    if (alreadyApply) {
       toast.warn('Already apply the scholarship!');
       return;
     }
@@ -67,7 +74,7 @@ const DetailsScholarship = () => {
       console.log(error);
     }
   };
-  
+
   useEffect(() => {
     loadReview();
   }, []);
@@ -99,11 +106,10 @@ const DetailsScholarship = () => {
         </div>
         <hr className="my-5" />
         <div className="flex flex-col gap-4">
-          <h3 className="font-bold text-4xl">{scholarshipName}</h3>
+          <h3><span className="font-bold text-4xl">{scholarshipName}</span> {alreadyApply && <span className="m-2 p-2 bg-green-500 rounded-xl text-white font-bold">Applied</span>}</h3>
           <p className="text-justify"><span className="font-bold">Scholarship Category:</span> {scholarshipCategory}</p>
           <p className="text-justify"><span className="font-bold">Application Deadline:</span> {applicationDeadline}</p>
           <p className="text-justify"><span className="font-bold">Subject Category:</span> {subjectCategory}</p>
-          {/* TODO: <p className="text-justify"><span className="font-bold">Stipend:</span> {Stipend}</p> */}
           <p className="text-justify"><span className="font-bold">Post Date:</span> {scholarshipPostDate}</p>
           <p className="text-justify"><span className="font-bold">Service Charge:</span> {serviceCharge}</p>
           <p className="text-justify"><span className="font-bold">Tuition Fees:</span> {tuitionFees}</p>
