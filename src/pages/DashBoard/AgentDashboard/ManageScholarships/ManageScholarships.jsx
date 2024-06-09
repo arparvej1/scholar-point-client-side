@@ -12,10 +12,15 @@ import { BiDetail } from "react-icons/bi";
 import useUserPower from "../../../../hooks/useUserPower";
 import ScholarshipCard from "../../../AllScholarship/ScholarshipCard/ScholarshipCard";
 import useAuth from "../../../../hooks/useAuth";
+import useAxiosPublic from "../../../../hooks/useAxiosPublic";
+
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const ManageScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
   const { user } = useAuth();
+  const axiosPublic = useAxiosPublic();
   const [loading, setLoading] = useState(true);
   const { isAdmin, adminLoading, isAgent, agentLoading, isAgentOrAdmin, agentOrAdminLoading } = useUserPower();
   const [displayLayout, setDisplayLayout] = useState(localStorage.getItem('displayLayout') ? localStorage.getItem('displayLayout') : 'grid');
@@ -149,13 +154,42 @@ const ManageScholarships = () => {
     document.getElementById(`updateScholarshipModal${id}`).showModal();
   };
 
-  const handleUpdate = (e) => {
+  const uploadImage_imgbb = async (uploadImage) => {
+    const data = uploadImage.files[0];
+    console.log(data)
+    // image upload to imgbb and then get an url
+    const imageFile = { image: data }
+    const res = await axiosPublic.post(image_hosting_api, imageFile, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    });
+    if (!res.data.success) {
+      return false
+    }
+    // console.log('with image url', res.data);
+    return res.data.data.display_url;
+  };
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
     const form = e.target;
+
+    let new_universityLogo = form.universityLogo.value;
+    let universityLogo = '';
+    const uploadImage = e.target.universityLogoNew;
+    if (uploadImage.files[0]) {
+      universityLogo = await uploadImage_imgbb(uploadImage);
+    }
+    if (!universityLogo) {
+      new_universityLogo = form.universityLogo.value;
+    } else {
+      new_universityLogo = universityLogo;
+    }
+
     const id = form.scholarshipId.value;
     const new_scholarshipName = form.scholarshipName.value;
     const new_universityName = form.universityName.value;
-    const new_universityLogo = form.universityLogo.value;
     const new_universityCountry = form.universityCountry.value;
     const new_universityCity = form.universityCity.value;
     const new_universityRank = form.universityRank.value;
@@ -331,8 +365,9 @@ const ManageScholarships = () => {
                                   </div>
                                   <div className="gap-5">
                                     <label className="flex flex-col gap-1 w-full">
-                                      <span>University Logo</span>
-                                      <input type="text" name="universityLogo" defaultValue={scholarship.universityLogo} placeholder="University Logo" className="input input-bordered w-full" required />
+                                      <span>University Logo ("If no new logo is chosen, the old one stays.")</span>
+                                      <input type="file" name="universityLogoNew" className="file-input file-input-bordered w-full max-w-xs" />
+                                      <input type="text" name="universityLogo" defaultValue={scholarship.universityLogo} placeholder="University Logo" className="input input-bordered w-full hidden" required />
                                     </label>
                                   </div>
                                   <div className="grid md:grid-cols-2 gap-5">

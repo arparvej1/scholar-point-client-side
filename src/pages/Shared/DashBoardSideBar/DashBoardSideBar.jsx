@@ -3,7 +3,7 @@ import useUserPower from "../../../hooks/useUserPower";
 
 const DashBoardSideBar = () => {
   const location = useLocation();
-  const { isAdmin, isAgentOrAdmin } = useUserPower();
+  const { isAdmin, isAgentOrAdmin, agentOrAdminLoading } = useUserPower();
 
   const navLinks = <>
     <li><Link className={`${location.pathname === "/dashboard" ? 'active' : undefined}`} to='/dashboard'>Dashboard</Link></li>
@@ -28,6 +28,7 @@ const DashBoardSideBar = () => {
       </>
     }
   </>
+  if (agentOrAdminLoading) return <div className="md:h-full bg-blue-500"></div>;
   return (
     <div className="md:h-full bg-blue-500">
       <ul className="menu flex flex-row md:flex-col flex-wrap text-white">

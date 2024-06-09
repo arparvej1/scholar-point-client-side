@@ -119,10 +119,17 @@ const ScholarshipApplyFormEdit = () => {
       setErrorMessage('');
     }
 
-    const applicantPhoto = form.applicantPhoto.value;
-    // const uploadImage = form.applicantPhoto;
-    // const applicantPhoto = await uploadImage_imgbb(uploadImage);
-    // if (!applicantPhoto) return;
+    let new_applicantPhoto = form.applicantPhotoNew.value;
+    let applicantPhoto = '';
+    const uploadImage = e.target.applicantPhotoNew;
+    if (uploadImage.files[0]) {
+      applicantPhoto = await uploadImage_imgbb(uploadImage);
+    }
+    if (!applicantPhoto) {
+      new_applicantPhoto = form.applicantPhoto.value;
+    } else {
+      new_applicantPhoto = applicantPhoto;
+    }
 
     const completeApply = {
       new_applicantPhoneNumber: applicantPhoneNumber,
@@ -141,7 +148,7 @@ const ScholarshipApplyFormEdit = () => {
       new_userDisplayName: userDisplayName,
       new_scholarshipId: scholarshipId,
       new_applyDate: applyDate,
-      new_applicantPhoto: applicantPhoto,
+      new_applicantPhoto,
       new_applicationFees: applicationFees,
       new_serviceCharge: serviceCharge,
       new_scholarshipName: scholarshipName,
@@ -191,9 +198,9 @@ const ScholarshipApplyFormEdit = () => {
           </div>
           <div className="gap-5">
             <label className="flex flex-col gap-1 w-full">
-              <span>Applicant Photo</span>
-              {/* <input type="file" name="applicantPhoto" className="file-input file-input-bordered w-full max-w-xs" required /> */}
-              <input type="text" name="applicantPhoto" value={applicantPhoto} placeholder="applicantPhoto" className="input input-bordered w-full" required />
+              <span>Applicant Photo ("If no new photo is chosen, the old one stays.")</span>
+              <input type="file" name="applicantPhotoNew" className="file-input file-input-bordered w-full max-w-xs" />
+              <input type="text" name="applicantPhoto" value={applicantPhoto} placeholder="applicantPhoto" className="input input-bordered w-full hidden" required />
             </label>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
