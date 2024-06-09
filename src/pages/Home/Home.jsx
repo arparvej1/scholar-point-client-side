@@ -50,7 +50,7 @@ const Home = () => {
   const loadReview = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_VERCEL_API}/reviews`);
-      console.log(response.data);
+      // console.log(response.data);
       setReviews(response.data);
     } catch (error) {
       console.log(error);
@@ -124,22 +124,22 @@ const Home = () => {
           <SwiperSlide>
             <div className="w-full">
               <div className='relative'>
-                <img src={`https://i.ibb.co/KzPcBX4/man1.jpg`} className="w-full lg:h-[600px]" />
+                <img src={`https://www.careerharvest.com.au/wp-content/uploads/2022/06/4.jpg`} className="w-full lg:h-[600px]" />
                 <div className='absolute md:top-32 md:left-32 lg:top-48 lg:left-48 text-white bg-[#00000071] p-10 rounded-2xl flex flex-col gap-3'>
-                  <h3 className='text-3xl  font-medium '>book name</h3>
-                  <h3 className='text-xl font-semibold'>Author: book.author</h3>
+                  <h3 className='text-3xl  font-medium '>Global Agriculture Scholarship</h3>
+                  <h3 className='text-xl font-semibold'>University of Agriculture</h3>
                   <div className="flex gap-2">
                     <BiSolidCategoryAlt className='text-2xl' />
                     <span>
-                      book.category
+                      Category: Agriculture
                     </span>
                   </div>
                   <div className='max-w-96'>
                     <p>
-                      book.shortDescription
+                    The University of Agriculture is pleased to announce the Global Agriculture Scholarship for the academic year 2024-2025. This prestigious scholarship is designed to support outstanding international students pursuing
                     </p>
                     <p>
-                      <Link to={``} className='flex gap-1 items-center text-[#1266e3] font-semibold'><span>Continue</span> <IoIosArrowRoundForward className='text-3xl' /></Link>
+                      <Link to={`/scholarship/665d5b298e72a8ec943199db`} className='flex gap-1 items-center text-white font-semibold'><span>Continue</span> <IoIosArrowRoundForward className='text-3xl' /></Link>
                     </p>
                   </div>
                 </div>
@@ -148,43 +148,55 @@ const Home = () => {
           </SwiperSlide>
           {/* ------- slide 2 --------- */}
           <SwiperSlide>
-            <div className="owl-item" style={{ width: 1110, marginRight: 70 }}>
-              <div className="item">
-                <div className="row align-items-center">
-                  <div className="col-lg-6  order-xl-0 order-lg-0 order-1">
-                    <div className="banner-inner-content">
-                      <h4>
-                        Discover New Horizons! <i className="fa-solid fa-earth-americas" />
-                      </h4>
-                      <h1>Embark on an Epic Journey!</h1>
-                      <p className="font-size-20">
-                        Explore new horizons and create unforgettable memories.
-                      </p>
-                      <div className="green-btn d-inline-block">
-                        <a href="about.html" className="d-inline-block">
-                          Explore Now
-                        </a>
-                      </div>
-                      {/* banner inner content */}
-                    </div>
-                    {/*  */}
+          <div className="w-full">
+              <div className='relative'>
+                <img src={`https://admissionscholarships.com/wp-content/uploads/2019/01/Scholarship-for-Economics-and-Finance.jpg`} className="w-full lg:h-[600px]" />
+                <div className='absolute md:top-32 md:right-32 lg:top-48 lg:right-48 text-white bg-[#00000071] p-10 rounded-2xl flex flex-col gap-3'>
+                  <h3 className='text-3xl  font-medium '>Economics and Finance Scholarship</h3>
+                  <h3 className='text-xl font-semibold'>University of Pennsylvania</h3>
+                  <div className="flex gap-2">
+                    <BiSolidCategoryAlt className='text-2xl' />
+                    <span>
+                      Category: Agriculture
+                    </span>
                   </div>
-                  <div className="col-lg-6">
-                    <figure className="banner-image-con">
-                      <img
-                        src="assets/images/home-banner-image.png"
-                        alt="image"
-                        className=""
-                      />
-                    </figure>
-                    {/*  */}
+                  <div className='max-w-96'>
+                    <p>
+                    The Economics and Finance Scholarship at the University of Pennsylvania provides financial support to undergraduate students pursuing degrees in economics, 
+                    </p>
+                    <p>
+                      <Link to={`/scholarship/665d5b868e72a8ec9432700b`} className='flex gap-1 items-center text-white font-semibold'><span>Continue</span> <IoIosArrowRoundForward className='text-3xl' /></Link>
+                    </p>
                   </div>
-                  {/* row */}
                 </div>
-                {/* item */}
               </div>
             </div>
-
+          </SwiperSlide>
+          {/* ----- slider 3 ---------- */}
+          <SwiperSlide>
+            <div className="w-full">
+              <div className='relative'>
+                <img src={`https://kenyapaediatric.org/wp-content/uploads/2024/01/KPFP-Advert-1080x675.jpg`} className="w-full lg:h-[600px]" />
+                <div className='absolute md:top-32 md:right-32 lg:top-48 lg:right-48 text-white bg-[#00000071] p-10 rounded-2xl flex flex-col gap-3'>
+                  <h3 className='text-3xl  font-medium '>Nursing Excellence Scholarship</h3>
+                  <h3 className='text-xl font-semibold'>University of Melbourne</h3>
+                  <div className="flex gap-2">
+                    <BiSolidCategoryAlt className='text-2xl' />
+                    <span>
+                      Category: Agriculture
+                    </span>
+                  </div>
+                  <div className='max-w-96'>
+                    <p>
+                    The Nursing Excellence Scholarship at the University of Melbourne is designed to support outstanding students pursuing nursing degrees. This scholarship recognizes academic excellence, dedication to the nursing profession, and a commitment to healthcare. 
+                    </p>
+                    <p>
+                      <Link to={`/scholarship/665d5b298e72a8ec943199db`} className='flex gap-1 items-center text-white font-semibold'><span>Continue</span> <IoIosArrowRoundForward className='text-3xl' /></Link>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </SwiperSlide>
         </Swiper>
       </div>
@@ -228,7 +240,7 @@ const Home = () => {
       {/* News Subscriber start */}
       <div className="my-5 md:my-10 lg:my-20">
         <p className="max-w-2xl text-center my-5 px-5 md:mt-10 lg:mt-24 mx-auto">
-          Elevate your reading journey with BookSphere. Subscribe now for the latest updates and curated selections. Don't miss out!
+          Elevate your scholarship journey with ScholarPoint. Subscribe now for the latest updates and curated resources. Don't miss out!
         </p>
         <div className="max-w-96 px-5 mx-auto">
           <form onSubmit={handleSubscribeEmail} className="flex flex-col gap-5">
