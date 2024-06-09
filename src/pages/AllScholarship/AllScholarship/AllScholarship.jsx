@@ -165,15 +165,16 @@ const AllScholarship = () => {
       {/* ----- filter end ----- */}
       {/* ------------------------- all scholarships display start ------------------ */}
       <div>
-        <div className="flex justify-end items-center gap-2 my-5">
-          <p className="font-semibold md:text-xl">Display Layout</p>
-          <div>
-            <span onClick={() => handleDisplayLayoutBtn('list')}
-              className={`btn rounded-l-2xl rounded-r-none text-xl md:text-2xl ${displayLayout === 'list' ? 'bg-accent bg-opacity-50' : ''}`}><FaList /></span>
-            <span onClick={() => handleDisplayLayoutBtn('grid')}
-              className={`btn rounded-l-none rounded-r-2xl text-xl md:text-2xl ${displayLayout === 'grid' ? 'bg-accent bg-opacity-50' : ''}`}><IoGrid /></span>
-          </div>
-        </div>
+        {scholarships.length > 0 ?
+          <div className="flex justify-end items-center gap-2 my-5">
+            <p className="font-semibold md:text-xl">Display Layout</p>
+            <div>
+              <span onClick={() => handleDisplayLayoutBtn('list')}
+                className={`btn rounded-l-2xl rounded-r-none text-xl md:text-2xl ${displayLayout === 'list' ? 'bg-accent bg-opacity-50' : ''}`}><FaList /></span>
+              <span onClick={() => handleDisplayLayoutBtn('grid')}
+                className={`btn rounded-l-none rounded-r-2xl text-xl md:text-2xl ${displayLayout === 'grid' ? 'bg-accent bg-opacity-50' : ''}`}><IoGrid /></span>
+            </div>
+          </div> : <></>}
         {/* --------------------- display view ------------------------- */}
         {
           displayLayout === 'list' ?
@@ -260,27 +261,31 @@ const AllScholarship = () => {
         }
       </div>
       {/* ------------------------- all scholarships display end ------------------ */}
-      <div className='text-center my-10'>
-        <p className="mb-8 font-semibold">Current page: {currentPage + 1}</p>
-        <div className="flex flex-wrap justify-center gap-3">
-          <button className="btn" onClick={handlePrevPage}>Prev</button>
-          {
-            pages.map(page => <button
-              // className={currentPage === page ? 'selected' : undefined}
-              className={`btn ${currentPage === page ? 'bg-accent text-accent-content' : undefined}`}
-              onClick={() => setCurrentPage(page)}
-              key={page}
-            >{page + 1}</button>)
-          }
-          <button className="btn" onClick={handleNextPage}>Next</button>
-          <select className="btn bg-base-100 border-2 text-base-content w-20" value={itemsPerPage} onChange={handleItemsPerPage}>
-            <option value="6">6</option>
-            <option value="12">12</option>
-            <option value="24">24</option>
-            <option value="48">48</option>
-          </select>
-        </div>
-      </div>
+      {
+        scholarships.length > 0 ?
+          <div className='text-center my-10'>
+            <p className="mb-8 font-semibold">Current page: {currentPage + 1}</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              <button className="btn" onClick={handlePrevPage}>Prev</button>
+              {
+                pages.map(page => <button
+                  // className={currentPage === page ? 'selected' : undefined}
+                  className={`btn ${currentPage === page ? 'bg-accent text-accent-content' : undefined}`}
+                  onClick={() => setCurrentPage(page)}
+                  key={page}
+                >{page + 1}</button>)
+              }
+              <button className="btn" onClick={handleNextPage}>Next</button>
+              <select className="btn bg-base-100 border-2 text-base-content w-20" value={itemsPerPage} onChange={handleItemsPerPage}>
+                <option value="6">6</option>
+                <option value="12">12</option>
+                <option value="24">24</option>
+                <option value="48">48</option>
+              </select>
+            </div>
+          </div> : <p className="mb-5 flex justify-center  md:text-xl">
+            <img className="md:w-3/4 lg:w-2/4" src="https://i.ibb.co/syjyZ2C/search-result-not-found.gif" alt="Sorry, no scholarships found. Try adjusting your search or check back later." />
+          </p>}
       <ToastContainer />
     </div>
   );
