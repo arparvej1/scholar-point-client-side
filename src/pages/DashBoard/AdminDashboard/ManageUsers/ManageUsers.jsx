@@ -24,17 +24,40 @@ const ManageUsers = () => {
     loadAllUsers();
   }, []);
 
-
-  const handleRoleChange = (userId, newRole) => {
-    // Update user role in the database
-    // Example: const response = await fetch(`/api/users/${userId}`, { method: 'PUT', body: JSON.stringify({ role: newRole }) });
-    // const updatedUser = await response.json();
-    // Update user role in the state
-    // const updatedUsers = users.map(user => user.id === userId ? { ...user, role: updatedUser.role } : user);
-    // setUsers(updatedUsers);
-    // For demonstration purpose, updating user role in state directly
-    const updatedUsers = allUsers.map(user => user.id === userId ? { ...user, role: newRole } : user);
+  const handleRoleChange = (selectUser, newRole) => {
+    if (selectUser.email === user.email) {
+      return toast.error('You cannot change your role!')
+    }
+    const updatedUsers = allUsers.map(user => user._id === selectUser._id ? { ...user, role: newRole } : user);
     setAllUsers(updatedUsers);
+  };
+
+  const handleMakeChange = (selectUser) => {
+    if (selectUser.email === user.email) {
+      return toast.error('You cannot change your role!')
+    }
+    console.log(selectUser);
+    const new_role = {
+      role: selectUser.role,
+    }
+    // --------- send server start -----
+    axiosSecure.patch(`/updateUser/${selectUser._id}`, new_role)
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data.modifiedCount > 0) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "User Role Update!",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    // --------- send server end -----
   };
 
   const handleDeleteUser = (selectUser) => {
@@ -75,12 +98,6 @@ const ManageUsers = () => {
     });
   };
 
-  const handleMakeChange = (userId) => {
-    // Implement logic to make changes to the user's information
-    // For demonstration purpose, alerting the user ID
-    alert(`Make changes for user with ID ${userId}`);
-  };
-
   return (
     <div>
       <Helmet>
@@ -101,14 +118,14 @@ const ManageUsers = () => {
           </thead>
           <tbody>
             {/* Replace this with your mapping logic */}
-            {allUsers.map(user => (
-              <tr key={user._id}>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
+            {allUsers.map(thisUser => (
+              <tr key={thisUser._id}>
+                <td>{thisUser.name}</td>
+                <td>{thisUser.email}</td>
                 <td>
                   <select
-                    value={user.role}
-                    onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                    value={thisUser.role}
+                    onChange={(e) => handleRoleChange(thisUser, e.target.value)}
                   >
                     <option value="user">User</option>
                     <option value="agent">Moderator</option>
@@ -116,10 +133,10 @@ const ManageUsers = () => {
                   </select>
                 </td>
                 <td>
-                  <button onClick={() => handleMakeChange(user._id)}>Make Change</button>
+                  <button onClick={() => handleMakeChange(thisUser)}>Make Change</button>
                 </td>
                 <td>
-                  <button onClick={() => handleDeleteUser(user)}>Delete</button>
+                  <button onClick={() => handleDeleteUser(thisUser)}>Delete</button>
                 </td>
               </tr>
             ))}
