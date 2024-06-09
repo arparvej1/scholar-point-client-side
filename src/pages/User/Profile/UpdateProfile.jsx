@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { ToastContainer } from 'react-toastify';
 import { AuthContext } from '../../../provider/AuthProvider';
+import axios from 'axios';
 
 const UpdateProfile = () => {
   const { user, updateUserInfo, setLoading, setAvatarIcon, setAlreadyUpdate } = useContext(AuthContext);
@@ -18,9 +19,11 @@ const UpdateProfile = () => {
     const photo_url = e.target.photo_url.value;
 
     // create user in firebase
+    console.log('click Update');
+    const userUpdateData = { name, photoURL: photo_url };
+    addUserToDatabase(userUpdateData, user.email)
     updateUserInfo(user, name, photo_url)
       .then(() => {
-        console.log('click Update');
         setLoading(false);
         navigate('/dashboard/profile');
         setAlreadyUpdate(true);
@@ -30,7 +33,17 @@ const UpdateProfile = () => {
         console.log(error);
       });
     console.log(user);
-  }
+  };
+
+  const addUserToDatabase = (userUpdateData, email) => {
+    axios.put(`${import.meta.env.VITE_VERCEL_API}/updateUser/${email}`, userUpdateData)
+      .then(response => {
+        console.log('User added to the database:', response.data);
+      })
+      .catch(error => {
+        console.error('Error adding user to the database:', error);
+      });
+  };
 
   return (
     <div className='md:4/5 lg:w-2/3 mx-auto'>

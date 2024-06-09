@@ -11,7 +11,7 @@ const CheckAgent = () => {
   useEffect(() => {
     if (!loading) {
       if (user) {
-        axiosSecure.get(`/checkagent/${user.email}`)
+        axiosSecure.get(`/checkAgent/${user.email}`)
           .then(res => {
             // console.log(res.data);
             if (res.data.agent) {

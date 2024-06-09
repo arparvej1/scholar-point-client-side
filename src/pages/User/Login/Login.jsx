@@ -63,9 +63,8 @@ const Login = () => {
   const handleLoginWithGoogle = () => {
     signInWithGoogle()
       .then(result => {
-        const { displayName, email } = result.user;
-        console.log(displayName);
-        console.log(email);
+        const { displayName, email, photoURL } = result.user;
+        console.log(result);
         console.log('Login Success!');
         setAlreadyLogin(true);
         navigate(location?.state ? location.state : '/');
@@ -73,7 +72,8 @@ const Login = () => {
           .then(emailExists => {
             if (!emailExists) {
               // If email does not exist, add the user to the database
-              addUserToDatabase({ email, name: displayName });
+              const userData = { email, name: displayName, photoURL };
+              addUserToDatabase(userData);
             } else {
               console.log('Email already exists in the database. Skipping user addition.');
             }
@@ -97,8 +97,8 @@ const Login = () => {
     }
   };
 
-  const addUserToDatabase = ({ email, name }) => {
-    axios.post(`${import.meta.env.VITE_VERCEL_API}/allUsers`, { email, name })
+  const addUserToDatabase = (userData) => {
+    axios.post(`${import.meta.env.VITE_VERCEL_API}/allUsers`, userData)
       .then(response => {
         console.log('User added to the database:', response.data);
       })
