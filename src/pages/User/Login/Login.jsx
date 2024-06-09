@@ -10,6 +10,7 @@ import { GoLock } from 'react-icons/go';
 import { VscEye, VscEyeClosed } from 'react-icons/vsc';
 import { MdMailOutline } from 'react-icons/md';
 import { AuthContext } from '../../../provider/AuthProvider';
+import axios from 'axios';
 
 const Login = () => {
   const { user, signInUser, signInWithGoogle, signInWithGithub, registerCheck, setAlreadyLogin, textDot, setTextDot } = useContext(AuthContext);
@@ -62,21 +63,71 @@ const Login = () => {
   const handleLoginWithGoogle = () => {
     signInWithGoogle()
       .then(result => {
-        console.log(result.user.displayName);
-        console.log(result.user.email);
+        const { displayName, email } = result.user;
+        console.log(displayName);
+        console.log(email);
         console.log('Login Success!');
         setAlreadyLogin(true);
         navigate(location?.state ? location.state : '/');
+        checkEmailExists(email) // Check if the email already exists in the database
+          .then(emailExists => {
+            if (!emailExists) {
+              // If email does not exist, add the user to the database
+              addUserToDatabase({ email, name: displayName });
+            } else {
+              console.log('Email already exists in the database. Skipping user addition.');
+            }
+          })
+          .catch(error => {
+            console.error('Error checking if email exists:', error);
+          });
+      })
+      .catch(error => {
+        console.error('Google sign-in failed:', error);
       });
-  }
+  };
+
+  const checkEmailExists = async (email) => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_VERCEL_API}/checkEmail/${email}`);
+      return response.data.exists;
+    } catch (error) {
+      console.error('Error checking if email exists:', error);
+      throw error;
+    }
+  };
+
+  const addUserToDatabase = ({ email, name }) => {
+    axios.post(`${import.meta.env.VITE_VERCEL_API}/allUsers`, { email, name })
+      .then(response => {
+        console.log('User added to the database:', response.data);
+      })
+      .catch(error => {
+        console.error('Error adding user to the database:', error);
+      });
+  };
+
 
   const handleLoginWithGithub = () => {
     signInWithGithub()
       .then(result => {
+        const { displayName, email } = result.user;
         console.log(result.user.displayName);
         console.log('Login Success!');
         setAlreadyLogin(true);
         navigate(location?.state ? location.state : '/');
+        checkEmailExists(email) // Check if the email already exists in the database
+          .then(emailExists => {
+            if (!emailExists) {
+              // If email does not exist, add the user to the database
+              addUserToDatabase({ email, name: displayName });
+            } else {
+              console.log('Email already exists in the database. Skipping user addition.');
+            }
+          })
+          .catch(error => {
+            console.error('Error checking if email exists:', error);
+          });
       })
       .catch(error => {
         console.log(error);

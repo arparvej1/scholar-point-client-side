@@ -13,7 +13,7 @@ const AllAppliedScholarship = () => {
 
   const loadAppliedScholarships = async () => {
     try {
-      const response = await axiosSecure.get(`${import.meta.env.VITE_VERCEL_API}/allScholarshipApply/${user.email}`);
+      const response = await axiosSecure.get(`/allScholarshipApply/${user.email}`);
       setAppliedScholarships(response.data);
       setLoading(false);
     } catch (error) {
@@ -110,34 +110,36 @@ const AllAppliedScholarship = () => {
       </Helmet>
       <h3 className="bg-base-300 w-full p-5 md:p-8 text-2xl md:text-5xl font-bold text-center rounded-3xl my-5">All Applied Scholarships</h3>
       {/* Table to display applied scholarships */}
-      <table className="table">
-        <thead>
-          <tr>
-            <th className="text-center">University<br />Name</th>
-            <th className="text-center">Scholarship <br />Name</th>
-            <th className="text-center">Scholarship <br />Category</th>
-            <th className="text-center">Subject <br />Category</th>
-            <th className="text-center">Applied <br />Degree</th>
-            <th className="text-center">Application <br />Fees</th>
-            <th className="text-center">Service <br />Charge</th>
-            <th className="text-center">Application <br />Status</th>
-            <th className="text-center">Actions</th>
-          </tr>
-        </thead>
-        {loading &&
-          <div className="flex justify-center">
-            <span className="loading loading-spinner loading-lg"></span>
-          </div>}
-        <tbody>
-          {appliedScholarships.map((application) => (
-            <AppliedScholarshipRow
-              key={application._id}
-              application={application}
-              allFunctions={allFunctions}
-            ></AppliedScholarshipRow>
-          ))}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="table table-xs">
+          <thead>
+            <tr>
+              <th className="text-center">University<br />Name</th>
+              <th className="text-center">Scholarship <br />Name</th>
+              <th className="text-center">Scholarship <br />Category</th>
+              <th className="text-center">Subject <br />Category</th>
+              <th className="text-center">Applied <br />Degree</th>
+              <th className="text-center">Application <br />Fees</th>
+              <th className="text-center">Service <br />Charge</th>
+              <th className="text-center">Application <br />Status</th>
+              <th className="text-center">Actions</th>
+            </tr>
+          </thead>
+          {loading &&
+            <div className="flex justify-center">
+              <span className="loading loading-spinner loading-lg"></span>
+            </div>}
+          <tbody>
+            {appliedScholarships.map((application) => (
+              <AppliedScholarshipRow
+                key={application._id}
+                application={application}
+                allFunctions={allFunctions}
+              ></AppliedScholarshipRow>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {/* ---------- detailsViewModal modal add --------- */}
       <div>
         {/* You can open the modal using document.getElementById('ID').showModal() method */}

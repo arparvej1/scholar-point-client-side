@@ -7,7 +7,7 @@ const AppliedScholarshipRow = ({ application, allFunctions }) => {
   const { handleViewDetails, handleCancel, handleFeedback } = allFunctions;
 
   return (
-    <tr key={application._id}>
+    <tr className="hover" key={application._id}>
       <td>{application.universityName}</td>
       <td>{application.scholarshipName}</td>
       <td>{application.scholarshipCategory}</td>

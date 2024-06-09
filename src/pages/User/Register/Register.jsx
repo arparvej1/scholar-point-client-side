@@ -30,7 +30,7 @@ const Register = () => {
     const photo_url = e.target.photo_url.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
-    const newRegister = { name, photo_url, email, password };
+    const newRegister = { name, photo_url, email };
 
     // password validation checking
     if (password.length < 6) {
@@ -61,7 +61,7 @@ const Register = () => {
         setLoading(true);
         setAlreadyRegister(true);
         // --------- send server start -----
-        axios.post(`${import.meta.env.VITE_VERCEL_API}/users`, newRegister)
+        axios.post(`${import.meta.env.VITE_VERCEL_API}/allUsers`, newRegister)
           .then(function (response) {
             console.log(response.data);
           })
