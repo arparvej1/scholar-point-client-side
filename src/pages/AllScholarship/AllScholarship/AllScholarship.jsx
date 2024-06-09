@@ -20,7 +20,7 @@ const AllScholarship = () => {
   const [displayLayout, setDisplayLayout] = useState(localStorage.getItem('displayLayout') ? localStorage.getItem('displayLayout') : 'grid');
 
   // ----------------- pagination -----------------------
-  const [filterQty, setFilterQty] = useState(1);
+  const [filterText, setFilterText] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(6);
   const [count, setCount] = useState(0);
@@ -29,7 +29,7 @@ const AllScholarship = () => {
   const pages = [...Array(numberOfPages).keys()];
 
   const callScholarshipsCount = async () => {
-    axios.get(`${import.meta.env.VITE_VERCEL_API}/scholarshipsCount?filterQty=${filterQty}`)
+    await axios.get(`${import.meta.env.VITE_VERCEL_API}/scholarshipsCount?filterText=${filterText}`)
       .then(function (response) {
         // handle success
         setCount(response.data.count)
@@ -41,7 +41,7 @@ const AllScholarship = () => {
   };
 
   const callLoadScholarships = async () => {
-    axios.get(`${import.meta.env.VITE_VERCEL_API}/scholarshipsLimit?page=${currentPage}&size=${itemsPerPage}&filterQty=${filterQty}`)
+    await axios.get(`${import.meta.env.VITE_VERCEL_API}/scholarshipsLimit?page=${currentPage}&size=${itemsPerPage}&filterText=${filterText}&input=${'University of Agriculture'}`)
       .then(function (response) {
         // handle success
         setScholarships(response.data);
@@ -56,7 +56,7 @@ const AllScholarship = () => {
   useEffect(() => {
     callScholarshipsCount();
     callLoadScholarships();
-  }, [currentPage, itemsPerPage, filterQty]);
+  }, [currentPage, itemsPerPage, filterText]);
 
   const handleItemsPerPage = e => {
     const val = parseInt(e.target.value);
@@ -93,15 +93,13 @@ const AllScholarship = () => {
     }
   }
 
-  const handleFilter = async (filterBy) => {
+  const handleSearch = async (e) => {
+    e.preventDefault();
     setCurrentPage(0);
-    if (filterBy === 'All') {
-      setFilterQty(2);
-    } else if (filterBy === 'Available') {
-      setFilterQty(1);
-    } else if (filterBy === 'Not') {
-      setFilterQty(0);
-    }
+    const form = e.target;
+    const searchText = form.searchField.value;
+    console.log(searchText);
+    setFilterText(searchText);
   }
 
   const handleDelete = _id => {
@@ -151,17 +149,19 @@ const AllScholarship = () => {
       </Helmet>
       <h3 className="bg-base-300 w-full p-5 md:p-8 text-2xl md:text-5xl font-bold text-center rounded-3xl my-5">All Scholarships </h3>
       {/* ----- filter start ----- */}
-      {/* <div className='my-6 text-center'>
-        <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn m-1 bg-[#23BE0A] hover:bg-[#22be0ac5] text-white w-52">Filter By <IoIosArrowDown className='text-2xl' />
+      <div className='my-6 text-center'>
+        <form onSubmit={handleSearch}>
+          <div className="flex flex-col md:flex-row justify-center gap-2">
+            <label className="input input-bordered flex items-center gap-2">
+              <input type="text" name="searchField" className="grow" placeholder="Search" />
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" /></svg>
+            </label>
+            <label className="flex flex-col gap-1">
+              <input type="submit" value="Search" className="btn bg-primary text-primary-content" />
+            </label>
           </div>
-          <ul tabIndex={0} className="dropdown-content z-50 menu p-2 shadow bg-base-100 rounded-box w-52">
-            <li className={`${filterQty === 2 ? 'bg-accent text-accent-content rounded-xl' : undefined}`}><Link onClick={() => handleFilter('All')}>Show all scholarships</Link></li>
-            <li className={`${filterQty === 1 ? 'bg-accent text-accent-content rounded-xl' : undefined}`}><Link onClick={() => handleFilter('Available')}>Show available scholarships</Link></li>
-            <li className={`${filterQty === 0 ? 'bg-accent text-accent-content rounded-xl' : undefined}`}><Link onClick={() => handleFilter('Not')}>Not Available</Link></li>
-          </ul>
-        </div>
-      </div> */}
+        </form>
+      </div>
       {/* ----- filter end ----- */}
       {/* ------------------------- all scholarships display start ------------------ */}
       <div>
@@ -186,8 +186,10 @@ const AllScholarship = () => {
                       <th></th>
                       <td className="md:text-sm lg:text-base text-center">Image</td>
                       <td className="md:text-sm lg:text-base text-center">University<br />Name</td>
-                      <td className="md:text-sm lg:text-base text-center">Scholarship<br />Category</td>
                       <td className="md:text-sm lg:text-base text-center">Address</td>
+                      <td className="md:text-sm lg:text-base text-center">Scholarship<br />Name</td>
+                      <td className="md:text-sm lg:text-base text-center">Scholarship<br />Category</td>
+                      <td className="md:text-sm lg:text-base text-center">Degree</td>
                       <td className="md:text-sm lg:text-base text-center">Application<br />Deadline</td>
                       <td className="md:text-sm lg:text-base text-center">Application<br />Fees</td>
                       <td className="md:text-sm lg:text-base text-center">Details</td>
@@ -209,8 +211,10 @@ const AllScholarship = () => {
                           <img className="w-10" src={scholarship.universityLogo} alt="" />
                         </td>
                         <td className="md:text-sm lg:text-base">{scholarship.universityName}</td>
-                        <td className="md:text-sm lg:text-base">{scholarship.scholarshipCategory}</td>
                         <td className="md:text-sm lg:text-base text-center">{scholarship.universityCity}, {scholarship.universityCountry}</td>
+                        <td className="md:text-sm lg:text-base">{scholarship.scholarshipName}</td>
+                        <td className="md:text-sm lg:text-base">{scholarship.scholarshipCategory}</td>
+                        <td className="md:text-sm lg:text-base">{scholarship.degree}</td>
                         <td className="md:text-sm lg:text-base text-center">{scholarship.applicationDeadline}</td>
                         <td className="md:text-sm lg:text-base text-center">{scholarship.applicationFees}</td>
                         <td className="md:text-sm lg:text-base text-center"><Link to={`/scholarship/${scholarship._id}`} className="btn btn-link text-xl"><BiDetail title="View Details" /></Link></td>

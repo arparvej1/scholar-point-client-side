@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
+import ReactStars from "react-rating-stars-component";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const ScholarshipCard = ({ scholarship, isAgentOrAdmin, handleDelete, manage, handleUpdateBtn, handleUpdate }) => {
   const { user } = useAuth();
@@ -23,7 +26,29 @@ const ScholarshipCard = ({ scholarship, isAgentOrAdmin, handleDelete, manage, ha
     postedUserEmail,
     postedUserDisplayName
   } = scholarship;
+  // ----------- rating start -------------
+  const [rating, setRating] = useState(0);
+  const calculateAverageRating = (reviews) => {
+    if (reviews.length === 0) return 0;
+    const sum = reviews.reduce((acc, curr) => acc + curr.rating, 0);
+    return sum / reviews.length;
+  };
+  const loadReview = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_VERCEL_API}/reviewsFilter?scholarshipId=${_id}`);
+      console.log(response.data);
+      const reviews = response.data;
+      const averageRating = calculateAverageRating(reviews);
+      setRating(averageRating);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  useEffect(() => {
+    loadReview();
+  }, []);
+  // ----------- rating end -------------
   return (
     <div className='border-2 rounded-2xl p-5 flex flex-col justify-between'>
       <div className='col-span-1 space-y-3 my-5'>
@@ -34,12 +59,25 @@ const ScholarshipCard = ({ scholarship, isAgentOrAdmin, handleDelete, manage, ha
         <div className='flex flex-col gap-2 justify-center'>
           <h3 className='font-semibold text-2xl'>{scholarshipCategory}</h3>
           <p><span className='font-semibold'>Address:</span> {universityCity}, {universityCountry}</p>
+          <p><span className='font-semibold'>Scholarship Name:</span> {scholarshipName}</p>
+          <p><span className='font-semibold'>Degree:</span> {degree}</p>
           <p><span className='font-semibold'>Application Deadline:</span> {applicationDeadline}</p>
           <p><span className='font-semibold'>Subject Category:</span> {subjectCategory}</p>
           <p><span className='font-semibold'>Application Fees:</span> {applicationFees}</p>
           {/* -- TODO: Update rating -- */}
-          <p><span className='font-semibold'>Rating:</span> 4.6</p>
-
+          {rating ?
+            <p>
+              <label className="flex gap-1 w-full items-center">
+                <span>Rating: </span>
+                <ReactStars
+                  size={24}
+                  activeColor="#ffd700"
+                  value={rating}
+                  edit={false}
+                />
+              </label>
+            </p>
+            :<></>}
         </div>
       </div>
       <div className="flex gap-5 justify-center">
