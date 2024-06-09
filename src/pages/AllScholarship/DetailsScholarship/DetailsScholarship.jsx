@@ -38,7 +38,7 @@ const DetailsScholarship = () => {
   const loadScholarshipApply = () => {
     axiosSecure.get(`/scholarshipApply/${user.email}`)
       .then(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
         setScholarshipApply(response.data);
       })
       .catch(function (error) {
@@ -68,7 +68,7 @@ const DetailsScholarship = () => {
   const loadReview = async () => {
     try {
       const response = await axiosSecure.get(`/reviewsFilter?scholarshipId=${_id}`);
-      console.log(response.data);
+      // console.log(response.data);
       setReviews(response.data);
     } catch (error) {
       console.log(error);
@@ -119,7 +119,7 @@ const DetailsScholarship = () => {
           </div>
         </div>
       </div>
-      {/* ---------- review add --------- */}
+      {/* ---------- review section --------- */}
       <div>
         {
           reviews.length > 0 &&
