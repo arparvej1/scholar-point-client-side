@@ -145,13 +145,42 @@ const AllAppliedScholarship = () => {
   };
 
   const allFunctions = { handleViewDetails, handleCancel, handleAccept, handleFeedback };
+  // ----- sort start ------------
+  // Define the handleSortChange function
+  const handleSortChange = (event) => {
+    const selectedValue = event.target.value;
+    sortData(selectedValue);
+  }
 
+  const sortData = (selectedValue) => {
+    const sortedData = [...appliedScholarships];
+
+    if (selectedValue === 'asc') {
+      sortedData.sort((a, b) => new Date(a.applyDate) - new Date(b.applyDate));
+    } else if (selectedValue === 'desc') {
+      sortedData.sort((a, b) => new Date(b.applyDate) - new Date(a.applyDate));
+    }
+
+    setAppliedScholarships(sortedData);
+  }
+
+  // ----- sort end ------------
   return (
     <div>
       <Helmet>
         <title>All Applied Scholarships | ScholarPoint</title>
       </Helmet>
       <h3 className="bg-base-300 w-full p-5 md:p-8 text-2xl md:text-5xl font-bold text-center rounded-3xl my-5">All Applied Scholarships</h3>
+      {/* ---------- filter start ----------- */}
+      <div className="flex justify-center space-x-4 p-4">
+        <div className='flex gap-2'>
+          <label htmlFor="sort">Sort By Applied Date:</label>
+          <select className='border-2' id="sort" onChange={handleSortChange}>
+            <option value="asc">ASC</option>
+            <option value="desc">DESC</option>
+          </select>
+        </div>
+      </div>
       {/* Table to display applied scholarships */}
       <div className="overflow-x-auto">
         <table className="table table-xs">
@@ -164,6 +193,7 @@ const AllAppliedScholarship = () => {
               <th className="text-center">Applied <br />Degree</th>
               <th className="text-center">Application <br />Fees</th>
               <th className="text-center">Service <br />Charge</th>
+              <th className="text-center">Applied <br />Date</th>
               <th className="text-center">Application <br />Status</th>
               <th className="text-center">Actions</th>
             </tr>
