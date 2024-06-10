@@ -16,6 +16,7 @@ const AppliedScholarshipRow = ({ application, allFunctions }) => {
       <td>{application.applicationFees}</td>
       <td>{application.serviceCharge}</td>
       <td>{application.applyDate}</td>
+      <td>{application.applicationDeadline}</td>
       <td>{application.applicationStatus}</td>
       <td className="flex gap-2">
         <button className="text-xl text-blue-500" title="Details" onClick={() => handleViewDetails(application)}><BiDetail /></button>
