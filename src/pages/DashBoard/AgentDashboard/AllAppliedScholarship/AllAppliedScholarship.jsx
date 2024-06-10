@@ -69,6 +69,33 @@ const AllAppliedScholarship = () => {
     });
   };
 
+
+  const handleAccept = (application) => {
+    const new_applicationStatus = {
+      new_applicationStatus: 'completed',
+    }
+
+    // --------- send server start -----
+    axiosSecure.patch(`/scholarshipApply/${application._id}`, new_applicationStatus)
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data.modifiedCount > 0) {
+          loadAppliedScholarships();
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Application Accepted!",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    // --------- send server end -----
+  };
+
   const handleFeedback = (application) => {
     setSelectedApplication(application);
     document.getElementById(`feedbackModal${selectedApplication?._id}`).showModal();
@@ -93,6 +120,22 @@ const AllAppliedScholarship = () => {
             showConfirmButton: false,
             timer: 1500
           });
+
+          const new_applicationStatus = {
+            new_applicationStatus: 'processing',
+          }
+          // --------- send server start -----
+          axiosSecure.patch(`/scholarshipApply/${selectedApplication._id}`, new_applicationStatus)
+            .then(function (response) {
+              console.log(response.data);
+              if (response.data.modifiedCount > 0) {
+                loadAppliedScholarships();
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+          // --------- send server end -----
         }
       })
       .catch(function (error) {
@@ -101,7 +144,7 @@ const AllAppliedScholarship = () => {
     // --------- send server end -----
   };
 
-  const allFunctions = { handleViewDetails, handleCancel, handleFeedback };
+  const allFunctions = { handleViewDetails, handleCancel, handleAccept, handleFeedback };
 
   return (
     <div>

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import { BiDetail } from "react-icons/bi";
 import { RiFeedbackLine } from 'react-icons/ri';
-import { MdCancel } from 'react-icons/md';
+import { MdCancel, MdOutlineDoneOutline } from 'react-icons/md';
 
 const AppliedScholarshipRow = ({ application, allFunctions }) => {
-  const { handleViewDetails, handleCancel, handleFeedback } = allFunctions;
+  const { handleViewDetails, handleCancel, handleAccept, handleFeedback } = allFunctions;
 
   return (
     <tr className="hover" key={application._id}>
@@ -19,7 +19,8 @@ const AppliedScholarshipRow = ({ application, allFunctions }) => {
       <td className="flex gap-2">
         <button className="text-xl text-blue-500" title="Details" onClick={() => handleViewDetails(application)}><BiDetail /></button>
         <button className="text-xl text-yellow-500" title="Feedback" onClick={() => handleFeedback(application)}><RiFeedbackLine /></button>
-        <button className={`text-xl ${application.applicationStatus === 'rejected' ? 'text-gray-300' : 'text-red-500'} `} disabled={application.applicationStatus === 'rejected'} title="Cancel" onClick={() => handleCancel(application)}><MdCancel /></button>
+        <button className={`text-xl ${application.applicationStatus === 'rejected' || application.applicationStatus === 'completed' ? 'text-gray-300' : 'text-green-500'} `} disabled={application.applicationStatus === 'rejected' || application.applicationStatus === 'completed'} title="Application Accept" onClick={() => handleAccept(application)}><MdOutlineDoneOutline /></button>
+        <button className={`text-xl ${application.applicationStatus === 'rejected' || application.applicationStatus === 'completed' ? 'text-gray-300' : 'text-red-500'} `} disabled={application.applicationStatus === 'rejected'|| application.applicationStatus === 'completed'} title="Cancel" onClick={() => handleCancel(application)}><MdCancel /></button>
       </td>
     </tr>
   );

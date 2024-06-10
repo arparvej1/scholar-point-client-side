@@ -145,8 +145,8 @@ const MyApplicationCard = ({ application, handleCancelApplication }) => {
       <td className='text-lg'>
         <div className='flex gap-3'>
           <button className='text-blue-600' title='Details' onClick={handleViewDetails}><BiDetail /></button>
-          <button className='text-yellow-600' title='Edit' onClick={handleEditApplication}><FaRegEdit /></button>
-          <button className='text-red-600' title='Cancel' onClick={() => handleCancelApplication(_id)}><MdCancel /></button>
+          <button className={`${application.applicationStatus === 'rejected' || application.applicationStatus === 'completed' ? 'text-gray-300' : 'text-yellow-600'}`} title='Edit' disabled={application.applicationStatus === 'rejected' || application.applicationStatus === 'completed'} onClick={handleEditApplication}><FaRegEdit /></button>
+          <button className={`${application.applicationStatus === 'rejected' || application.applicationStatus === 'completed' ? 'text-gray-300' : 'text-red-500'}`} title='Cancel' disabled={application.applicationStatus === 'rejected' || application.applicationStatus === 'completed'} onClick={() => handleCancelApplication(_id)}><MdCancel /></button>
         </div>
       </td>
       <td className='text-center text-lg'><button className='text-secondary' title='Add Review' onClick={() => handleAddReviewBtn(scholarshipId)}><MdOutlineRateReview /></button></td>
