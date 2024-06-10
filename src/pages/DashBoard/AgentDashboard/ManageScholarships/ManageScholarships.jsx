@@ -327,10 +327,10 @@ const ManageScholarships = () => {
                           <>
                             <td className="md:text-sm lg:text-base">
                               {/* <Link to={`/dashboard/update-scholarship/${scholarship._id}`} className='btn btn-link text-xl text-center'><FiEdit title="Update scholarship" /></Link> */}
-                              <Link onClick={() => handleUpdateBtn(scholarship._id)} className='btn btn-link text-xl text-center'><FiEdit title="Update scholarship" /></Link>
+                              <Link onClick={() => handleUpdateBtn(scholarship._id)} className='btn btn-link text-xl text-center text-yellow-600'><FiEdit title="Update scholarship" /></Link>
                             </td>
                             <td className="md:text-sm lg:text-base">
-                              <button onClick={() => handleDelete(scholarship._id)} className='btn btn-link text-xl text-center'><RiDeleteBin2Fill title="Delete" />
+                              <button onClick={() => handleDelete(scholarship._id)} className='btn btn-link text-xl text-center text-red-500'><RiDeleteBin2Fill title="Delete" />
                               </button>
                             </td>
                           </>
