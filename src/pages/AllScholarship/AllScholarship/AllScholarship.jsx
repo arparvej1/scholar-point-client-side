@@ -260,6 +260,11 @@ const AllScholarship = () => {
             <span className="loading loading-spinner loading-lg"></span>
           </div>
         }
+        {!loading && !scholarships.length > 0 &&
+          <p className="mb-5 flex justify-center  md:text-xl">
+            <img className="md:w-3/4 lg:w-2/4" src="https://i.ibb.co/syjyZ2C/search-result-not-found.gif" alt="Sorry, no scholarships found. Try adjusting your search or check back later." />
+          </p>
+        }
       </div>
       {/* ------------------------- all scholarships display end ------------------ */}
       {
@@ -284,9 +289,7 @@ const AllScholarship = () => {
                 <option value="48">48</option>
               </select>
             </div>
-          </div> : <p className="mb-5 flex justify-center  md:text-xl">
-            <img className="md:w-3/4 lg:w-2/4" src="https://i.ibb.co/syjyZ2C/search-result-not-found.gif" alt="Sorry, no scholarships found. Try adjusting your search or check back later." />
-          </p>}
+          </div> : <></>}
       <ToastContainer />
     </div>
   );
