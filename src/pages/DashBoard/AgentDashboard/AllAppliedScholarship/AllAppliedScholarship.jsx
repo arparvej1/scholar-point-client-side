@@ -145,27 +145,37 @@ const AllAppliedScholarship = () => {
   };
 
   const allFunctions = { handleViewDetails, handleCancel, handleAccept, handleFeedback };
+  
   // ----- sort start ------------
-  // Define the handleSortChange function
-  const handleSortChange = (event) => {
-    const selectedValue = event.target.value;
-    sortData(selectedValue);
+  const handleSortChange = () => {
+    const sortBy = document.getElementById('sort_type').value;
+    const sortOrder = document.getElementById('sort_order').value;
+    sortData(sortBy, sortOrder);
   }
 
-  const sortData = (selectedValue) => {
+  const sortData = (sortBy, sortOrder) => {
     const sortedData = [...appliedScholarships];
-    if (selectedValue === 'asc') {
-      sortedData.sort((a, b) => new Date(a.applyDate) - new Date(b.applyDate));
-    } else if (selectedValue === 'desc') {
-      sortedData.sort((a, b) => new Date(b.applyDate) - new Date(a.applyDate));
-    } else if (selectedValue === 'dateline_asc') {
-      sortedData.sort((a, b) => new Date(a.applicationDeadline) - new Date(b.applicationDeadline));
-    } else if (selectedValue === 'dateline_desc') {
-      sortedData.sort((a, b) => new Date(b.applicationDeadline) - new Date(a.applicationDeadline));
+
+    switch (sortBy) {
+      case 'deadline':
+        sortedData.sort((a, b) => {
+          const dateA = new Date(a.applicationDeadline);
+          const dateB = new Date(b.applicationDeadline);
+          return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+        });
+        break;
+      case 'applied':
+        sortedData.sort((a, b) => {
+          const dateA = new Date(a.applyDate);
+          const dateB = new Date(b.applyDate);
+          return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+        });
+        break;
+      default:
+        break;
     }
     setAppliedScholarships(sortedData);
   }
-
   // ----- sort end ------------
   return (
     <div>
@@ -173,23 +183,24 @@ const AllAppliedScholarship = () => {
         <title>All Applied Scholarships | ScholarPoint</title>
       </Helmet>
       <h3 className="bg-base-300 w-full p-5 md:p-8 text-2xl md:text-5xl font-bold text-center rounded-3xl my-5">All Applied Scholarships</h3>
-      {/* ---------- filter start ----------- */}
-      <div className="flex justify-center gap-5 space-x-4 p-4">
+      {/* ---------- sort start ----------- */}
+      <div className="flex flex-col md:flex-row justify-center gap-5 space-x-4 p-4">
         <div className='flex gap-2'>
-          <label htmlFor="sort">Sort By Applied Date:</label>
-          <select className='border-2' id="sort" onChange={handleSortChange}>
+          <label htmlFor="sort_type">Sort By:</label>
+          <select className='border-2' id="sort_type" onChange={handleSortChange}>
+            <option value="applied">Applied Date</option>
+            <option value="deadline">Deadline</option>
+          </select>
+        </div>
+        <div className='flex gap-2'>
+          <label htmlFor="sort_order">Sort Order:</label>
+          <select className='border-2' id="sort_order" onChange={handleSortChange}>
             <option value="asc">ASC</option>
             <option value="desc">DESC</option>
           </select>
         </div>
-        <div className='flex gap-2'>
-          <label htmlFor="sort_dateline">Sort By Deadline:</label>
-          <select className='border-2' id="sort_dateline" onChange={handleSortChange}>
-            <option value="dateline_asc">ASC</option>
-            <option value="dateline_desc">DESC</option>
-          </select>
-        </div>
       </div>
+      {/* ---------- sort end ----------- */}
       {/* Table to display applied scholarships */}
       <div className="overflow-x-auto">
         <table className="table table-xs">
