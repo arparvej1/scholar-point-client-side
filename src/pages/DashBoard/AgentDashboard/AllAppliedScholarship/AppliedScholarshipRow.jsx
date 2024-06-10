@@ -13,11 +13,11 @@ const AppliedScholarshipRow = ({ application, allFunctions }) => {
       <td>{application.scholarshipCategory}</td>
       <td>{application.subjectCategory}</td>
       <td>{application.applicantApplyingDegree}</td>
-      <td>{application.applicationFees}</td>
-      <td>{application.serviceCharge}</td>
-      <td>{application.applyDate}</td>
-      <td>{application.applicationDeadline}</td>
-      <td>{application.applicationStatus}</td>
+      <td className='text-center'>{application.applicationFees}</td>
+      <td className='text-center'>{application.serviceCharge}</td>
+      <td className='text-center'>{application.applyDate}</td>
+      <td className='text-center'>{application.applicationDeadline}</td>
+      <td className='text-center'>{application.applicationStatus}</td>
       <td className="flex gap-2">
         <button className="text-xl text-blue-500" title="Details" onClick={() => handleViewDetails(application)}><BiDetail /></button>
         <button className="text-xl text-yellow-500" title="Feedback" onClick={() => handleFeedback(application)}><RiFeedbackLine /></button>
