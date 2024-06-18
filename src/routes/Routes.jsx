@@ -26,6 +26,7 @@ import ManageScholarships from "../pages/DashBoard/AgentDashboard/ManageScholars
 import AllReviews from "../pages/DashBoard/AgentDashboard/AllReviews/AllReviews";
 import AllAppliedScholarship from "../pages/DashBoard/AgentDashboard/AllAppliedScholarship/AllAppliedScholarship";
 import ManageUsers from "../pages/DashBoard/AdminDashboard/ManageUsers/ManageUsers";
+import AllScholarshipSearch from "../pages/AllScholarship/AllScholarship/AllScholarshipSearch";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: '/all-scholarship',
         element: <AllScholarship></AllScholarship>
+      },
+      {
+        path: '/all-scholarship-search',
+        element: <AllScholarshipSearch></AllScholarshipSearch>
       },
       {
         path: '/update-profile',
