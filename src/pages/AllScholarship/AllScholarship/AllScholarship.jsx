@@ -140,8 +140,6 @@ const AllScholarship = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const [manage, setManage] = useState(false);
-
   return (
     <div>
       <Helmet>
@@ -178,7 +176,7 @@ const AllScholarship = () => {
         {/* --------------------- display view ------------------------- */}
         {
           displayLayout === 'list' ?
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-5xl mx-auto">
               {/* scholarships display list view */}
               {scholarships.length > 0 ?
                 <div className="overflow-x-auto">
@@ -186,20 +184,20 @@ const AllScholarship = () => {
                     <thead>
                       <tr>
                         <th></th>
-                        <td className="md:text-sm lg:text-base text-center">Image</td>
-                        <td className="md:text-sm lg:text-base text-center">University<br />Name</td>
-                        <td className="md:text-sm lg:text-base text-center">Address</td>
-                        <td className="md:text-sm lg:text-base text-center">Scholarship<br />Name</td>
-                        <td className="md:text-sm lg:text-base text-center">Scholarship<br />Category</td>
-                        <td className="md:text-sm lg:text-base text-center">Degree</td>
-                        <td className="md:text-sm lg:text-base text-center">Application<br />Deadline</td>
-                        <td className="md:text-sm lg:text-base text-center">Application<br />Fees</td>
-                        <td className="md:text-sm lg:text-base text-center">Details</td>
+                        <td className="md:text-sm text-center">Image</td>
+                        <td className="md:text-sm text-center">University<br />Name</td>
+                        <td className="md:text-sm text-center">Address</td>
+                        <td className="md:text-sm text-center">Scholarship<br />Name</td>
+                        <td className="md:text-sm text-center">Scholarship<br />Category</td>
+                        <td className="md:text-sm text-center">Degree</td>
+                        <td className="md:text-sm text-center">Application<br />Deadline</td>
+                        <td className="md:text-sm text-center">Application<br />Fees</td>
+                        <td className="md:text-sm text-center">Details</td>
                         {
-                          isAgentOrAdmin && manage ?
+                          isAgentOrAdmin ?
                             <>
-                              <td className="md:text-sm lg:text-base text-center">Update</td>
-                              <td className="md:text-sm lg:text-base text-center">Delete</td>
+                              <td className="md:text-sm text-center">Update</td>
+                              <td className="md:text-sm text-center">Delete</td>
                             </>
                             : undefined
                         }
@@ -207,26 +205,26 @@ const AllScholarship = () => {
                     </thead>
                     <tbody>
                       {
-                        scholarships.map((scholarship, idx) => <tr key={scholarship._id} className="md:text-sm lg:text-base">
-                          <th className="md:text-sm lg:text-base">{(currentPage * itemsPerPage) + idx + 1}</th>
-                          <td className="md:text-sm lg:text-base">
+                        scholarships.map((scholarship, idx) => <tr key={scholarship._id} className="md:text-sm">
+                          <th className="md:text-sm">{(currentPage * itemsPerPage) + idx + 1}</th>
+                          <td className="md:text-sm">
                             <img className="w-10" src={scholarship.universityLogo} alt="" />
                           </td>
-                          <td className="md:text-sm lg:text-base">{scholarship.universityName}</td>
-                          <td className="md:text-sm lg:text-base text-center">{scholarship.universityCity}, {scholarship.universityCountry}</td>
-                          <td className="md:text-sm lg:text-base">{scholarship.scholarshipName}</td>
-                          <td className="md:text-sm lg:text-base">{scholarship.scholarshipCategory}</td>
-                          <td className="md:text-sm lg:text-base">{scholarship.degree}</td>
-                          <td className="md:text-sm lg:text-base text-center">{scholarship.applicationDeadline}</td>
-                          <td className="md:text-sm lg:text-base text-center">{scholarship.applicationFees}</td>
-                          <td className="md:text-sm lg:text-base text-center"><Link to={`/scholarship/${scholarship._id}`} className="btn btn-link text-xl"><BiDetail title="View Details" /></Link></td>
+                          <td className="md:text-sm">{scholarship.universityName}</td>
+                          <td className="md:text-sm text-center">{scholarship.universityCity}, {scholarship.universityCountry}</td>
+                          <td className="md:text-sm">{scholarship.scholarshipName}</td>
+                          <td className="md:text-sm">{scholarship.scholarshipCategory}</td>
+                          <td className="md:text-sm">{scholarship.degree}</td>
+                          <td className="md:text-sm text-center">{scholarship.applicationDeadline}</td>
+                          <td className="md:text-sm text-center">{scholarship.applicationFees}</td>
+                          <td className="md:text-sm text-center"><Link to={`/scholarship/${scholarship._id}`} className="btn btn-link text-xl"><BiDetail title="View Details" /></Link></td>
                           {
-                            isAgentOrAdmin && manage ?
+                            isAgentOrAdmin ?
                               <>
-                                <td className="md:text-sm lg:text-base">
+                                <td className="md:text-sm">
                                   <Link to={`/dashboard/update-scholarship/${scholarship._id}`} className='btn btn-link text-xl text-center'><FiEdit title="Update scholarship" /></Link>
                                 </td>
-                                <td className="md:text-sm lg:text-base">
+                                <td className="md:text-sm">
                                   <button onClick={() => handleDelete(scholarship._id)} className='btn btn-link text-xl text-center'><RiDeleteBin2Fill title="Delete" />
                                   </button>
                                 </td>
