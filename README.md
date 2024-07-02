@@ -57,3 +57,6 @@ Make sure you have Node.js and npm installed on your machine.
 2. **Running the Project:**
    ```bash
    npm run dev
+
+This command runs the app in development mode.
+Open http://localhost:5173 to view it in the browser.
