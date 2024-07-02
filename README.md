@@ -33,3 +33,27 @@ ScholarPoint is designed to provide a seamless experience for students searching
 - **Secure Applications:** Secure application process ensuring the confidentiality of user information.
 - **Responsive Design:** Responsive design that adapts to different screen sizes, making it accessible across devices.
 
+## Local Development
+
+To run ScholarPoint locally on your machine, follow these steps:
+
+### Prerequisites
+Make sure you have Node.js and npm installed on your machine.
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/arparvej1/scholar-point-client-side.git
+
+2. **Navigate into the project directory:**
+   ```bash
+   cd scholar-point-client-side
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+
+2. **Running the Project:**
+   ```bash
+   npm run dev
